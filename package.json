@@ -1,0 +1,10 @@
+{
+	"name": "GruntBuildApp",
+	"version": "0.0.1",
+	"dependencies": {
+		"grunt-beautify": ">= 0.1.0",
+		"grunt-contrib": ">= 0.1.0",
+		"grunt-crusher": ">= 0.1.0",
+		"grunt-css": ">= 0.2.1"
+	}
+}
