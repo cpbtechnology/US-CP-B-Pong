@@ -26,7 +26,9 @@ $(function(){
 
 	var socket = io.connect(url);
 
-
+socket.on('connect', function(obj){
+	socket.emit('connect');
+});
 
 playarea_canvas = $('#paper');
 playarea = playarea_canvas[0].getContext('2d');
@@ -53,17 +55,23 @@ playerId = 2;
 player_1 = 0;
 player_2 = 1;
 
-$('#User1').click(function(){
-	playerId = 1;
+socket.on('get_players', function(data){
+var get_players = function(){
+	$('#User1').click(function(){
+		playerId = 0;
+		console.log(playerId);
+		$('#instructions').hide();
 	
-	console.log(playerId);
-	$('#instructions').hide();
+	});
+	$('#User2').click(function(){
+		player_2 = 1;
+		$('#instructions').hide();
+		console.log(playerId);	
+	});
+}
+
 });
-$('#User2').click(function(){
-	
-	$('#instructions').hide();
-	console.log(playerId);
-});
+
 
 player_1_scr = 0;	//player scores
 player_2_scr = 0;
@@ -88,35 +96,35 @@ function sleep(numberMillis)
 	}
 }
 
-	var init = function() {
-		pa['width'] = 960;
-		pa['height'] = 600;
-		pa['player_margin'] = 30;		//area behind player paddles
-		pa['foreground'] = "#EC008C";
-		pa['background'] = "#FFF22D";
-		
-		divider['pos'] = pa['width']/2;
-		divider['width'] = 4;
-		
-		paddle_1['width'] = 18;
-		paddle_1['height'] = 192;
-		paddle_1['x'] = pa['player_margin'];
-		paddle_1['y'] = (pa['height'] /2 ) - (paddle_1['height'] / 2);
-		
-		paddle_2['width'] = 18;
-		paddle_2['height'] = 192;
-		paddle_2['x'] = (pa['width'] - pa['player_margin'] - paddle_2['width']);
-		paddle_2['y'] = (pa['height'] /2 ) - (paddle_2['height'] / 2);
-		
-		ball['width'] = 30;
-		ball['height'] = 30;
-		ball['x'] = (pa['width']/2) - (ball['width'] / 2);
-		ball['y'] = (pa['height']/2) - (ball['height'] / 2);
-		
-		ball_direction = Math.random() * 360;	//initialize ball direction, which is determined by angle, at random
-		speed = 2;
-	}
-
+var init = function() {
+	pa['width'] = 960;
+	pa['height'] = 600;
+	pa['player_margin'] = 30;		//area behind player paddles
+	pa['foreground'] = "#EC008C";
+	pa['background'] = "#FFF22D";
+	
+	divider['pos'] = pa['width']/2;
+	divider['width'] = 4;
+	
+	paddle_1['width'] = 18;
+	paddle_1['height'] = 192;
+	paddle_1['x'] = pa['player_margin'];
+	paddle_1['y'] = (pa['height'] /2 ) - (paddle_1['height'] / 2);
+	
+	paddle_2['width'] = 18;
+	paddle_2['height'] = 192;
+	paddle_2['x'] = (pa['width'] - pa['player_margin'] - paddle_2['width']);
+	paddle_2['y'] = (pa['height'] /2 ) - (paddle_2['height'] / 2);
+	
+	ball['width'] = 30;
+	ball['height'] = 30;
+	ball['x'] = (pa['width']/2) - (ball['width'] / 2);
+	ball['y'] = (pa['height']/2) - (ball['height'] / 2);
+	
+	ball_direction = Math.random() * 360;	//initialize ball direction, which is determined by angle, at random
+	speed = 2;
+}
+socket.on('renderPlayarea', function(data){
 var renderPlayarea = function() {
 	playarea.beginPath();
 	
@@ -161,7 +169,7 @@ var renderPlayarea = function() {
 	playarea.closePath();
 }
 
-
+});
 
 
 var testCollisions = function() {
@@ -202,7 +210,7 @@ var testCollisions = function() {
 	}
 }
 
-function setScore(p)
+var setScore = function (p)
 {
 	if(p == player_1)
 	{
@@ -266,14 +274,15 @@ document.onkeyup = function(ev)
 	}
 }
 
+socket.emit('run_game', function(data){
+	var main = function(){
+		testCollisions();
+		renderPlayarea();
+	}
+	init();
+	game = setInterval(main, 25);
 
-var main = function(){
-	testCollisions();
-	renderPlayarea();
-}
-
-init();
-game = setInterval(main, 25);
+});
 
 	
 });
