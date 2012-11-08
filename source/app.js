@@ -23,9 +23,11 @@ io.sockets.on('connection', function (socket) {
 		console.log("How Many Connected === " + howmanyconnected);
 	});
 	
+	socket.broadcast.emit('init', function (data) {
 	
-	socket.emit('get_players', function (data) {
-		console.log("get_players");
+	});
+	socket.broadcast.emit('get_players', function (data) {
+
 	});
 	socket.broadcast.emit('render_Player_area', function (data) {
 		
