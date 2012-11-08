@@ -12,9 +12,6 @@ function handler (request, response) {
     });
 }
 
-
-
-// Listen for incoming connections from clients
 io.sockets.on('connection', function (socket) {
 	socket.on('connect', function (data) {
 		socket.broadcast.emit('renderPlayarea', data);

@@ -46,7 +46,7 @@ key_S = 83;
 key_pause = 32;
 
 speed = 2;			//controls the speed of the ball
-paddle_inc = 10;	//how many pixels paddle can move in either direction
+paddle_inc = 30;	//how many pixels paddle can move in either direction
 pause = false;
 var playerId = 0;
 playerId = 2;
@@ -57,19 +57,17 @@ $('#User1').click(function(){
 	playerId = 1;
 	
 	console.log(playerId);
+	$('#instructions').hide();
 });
 $('#User2').click(function(){
 	
-
+	$('#instructions').hide();
 	console.log(playerId);
 });
 
-
-		//player IDs
-
 player_1_scr = 0;	//player scores
 player_2_scr = 0;
-player_1_direction = null;	//null = no movement whatsoever
+player_1_direction = null;	
 player_2_direction = null;
 
 pa = new Array();
@@ -91,36 +89,34 @@ function sleep(numberMillis)
 }
 
 	var init = function() {
-		pa['width'] = 320;
-		pa['height'] = 200;
-		pa['player_margin'] = 10;		//area behind player paddles
-		pa['foreground'] = "#FFFFFF";
-		pa['background'] = "#000000";
+		pa['width'] = 960;
+		pa['height'] = 600;
+		pa['player_margin'] = 30;		//area behind player paddles
+		pa['foreground'] = "#EC008C";
+		pa['background'] = "#FFF22D";
 		
 		divider['pos'] = pa['width']/2;
 		divider['width'] = 4;
 		
-		paddle_1['width'] = 8;
-		paddle_1['height'] = 64;
+		paddle_1['width'] = 18;
+		paddle_1['height'] = 192;
 		paddle_1['x'] = pa['player_margin'];
 		paddle_1['y'] = (pa['height'] /2 ) - (paddle_1['height'] / 2);
 		
-		paddle_2['width'] = 8;
-		paddle_2['height'] = 64;
+		paddle_2['width'] = 18;
+		paddle_2['height'] = 192;
 		paddle_2['x'] = (pa['width'] - pa['player_margin'] - paddle_2['width']);
 		paddle_2['y'] = (pa['height'] /2 ) - (paddle_2['height'] / 2);
 		
-		ball['width'] = 10;
-		ball['height'] = 10;
+		ball['width'] = 30;
+		ball['height'] = 30;
 		ball['x'] = (pa['width']/2) - (ball['width'] / 2);
 		ball['y'] = (pa['height']/2) - (ball['height'] / 2);
 		
 		ball_direction = Math.random() * 360;	//initialize ball direction, which is determined by angle, at random
 		speed = 2;
 	}
-socket.on('connect', function(obj){
-	socket.emit('renderPlayarea');
-});
+
 var renderPlayarea = function() {
 	playarea.beginPath();
 	
@@ -160,10 +156,8 @@ var renderPlayarea = function() {
 	//redraw divider
 	playarea.lineWidth = divider['width'];
 	playarea.lineTo(divider['pos'], 0);
-	playarea.lineTo(divider['pos'], pa['height'] = 200);
+	playarea.lineTo(divider['pos'], pa['height'] = 600);
 	playarea.lineWidth = 1;
-	
-	playarea.stroke();
 	playarea.closePath();
 }
 
