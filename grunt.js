@@ -1,20 +1,13 @@
 module.exports = function (grunt) {
 
 	var ROOT = './source';
-	var CSS = ROOT + '/stylesheets';
-	var JS = ROOT + '/javascripts';
+	var CSS = ROOT + '/assets/css';
+	var JS = ROOT + '/assets/js';
 	var JSBIN = JS + '/generated';
 	var CSSBIN = CSS + '/generated';
 
 	// Project configuration.
 	grunt.initConfig({
-
-		// JS linting
-		lint: {
-			src: [
-				JS + '/app/**/*.js'
-			]
-		},
 
 		// JS beautifier options
 		beautifier: {
@@ -27,7 +20,7 @@ module.exports = function (grunt) {
 
 		// JS beautifier
 		beautify: {
-			files: '<config:lint.src>'
+			files: ['source/assets/js/**']
 		},
 
 		// CSS minconcat
