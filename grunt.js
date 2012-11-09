@@ -85,6 +85,25 @@ module.exports = function (grunt) {
 					}
 				}
 			}
+		},
+
+		jslint: {
+			files: ['source/assets/js/**'],
+			exclude: ['source/assets/js/plugins/**', 'source/assets/js/lib/**'],
+			directives: { // example directives
+				browser: true,
+				unparam: true,
+				todo: true,
+				predef: [ // array of pre-defined globals
+				'jQuery']
+			},
+			options: {
+				junit: 'docs/jslint/junit.xml',
+				// write the output to a JUnit XML
+				log: 'docs/jslint/lint.log',
+				jslintXml: 'docs/jslint/jslint_xml.xml',
+				errorsOnly: true // only display errors
+			}
 		}
 	});
 
@@ -98,5 +117,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib');
 	grunt.loadNpmTasks('grunt-crusher');
 	grunt.loadNpmTasks('grunt-css');
+	grunt.loadNpmTasks('grunt-jslint');
 
 };
