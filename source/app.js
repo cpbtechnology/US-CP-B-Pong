@@ -16,8 +16,7 @@ var buffer = [];
 
 io.sockets.on('connection', function (socket) { 
 	socket.on('connect', function (data) {
-		//socket.broadcast.emit('renderPlayarea', renderPlayerarea());
-		
+		socket.broadcast.emit('renderPlayarea', renderPlayerarea());
 		var howmanyconnected = io.sockets.clients().length;
 		console.log("Connect Socket === " + socket.id);
 		console.log("How Many Connected === " + howmanyconnected);
