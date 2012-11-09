@@ -12,28 +12,31 @@ function handler (request, response) {
     });
 }
 
-var buffer = []
+var buffer = [];
 
 io.sockets.on('connection', function (socket) { 
 	socket.on('connect', function (data) {
 		//socket.broadcast.emit('renderPlayarea', renderPlayerarea());
-		
 		var howmanyconnected = io.sockets.clients().length;
 		console.log("Connect Socket === " + socket.id);
 		console.log("How Many Connected === " + howmanyconnected);
 	});
 	
+	socket.broadcast.emit('init', function (data) {
 	
-	socket.emit('get_players', function (data) {
-		console.log("get_players");
 	});
+	
+	socket.broadcast.emit('get_players', function (data) {
+
+	});
+	
 	socket.broadcast.emit('render_Player_area', function (data) {
 		
 	});
+
 	socket.emit('run_game', function (data) {
 		
 	});
-
 
 });
 

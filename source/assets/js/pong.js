@@ -96,7 +96,7 @@ function sleep(numberMillis)
 	}
 }
 
-var init = function() {
+function init(){
 	pa['width'] = 960;
 	pa['height'] = 600;
 	pa['player_margin'] = 30;		//area behind player paddles
@@ -124,8 +124,8 @@ var init = function() {
 	ball_direction = Math.random() * 360;	//initialize ball direction, which is determined by angle, at random
 	speed = 2;
 }
-socket.on('renderPlayarea', function(data){
-var renderPlayarea = function() {
+
+function renderPlayarea(){
 	playarea.beginPath();
 	
 	playarea.clearRect(0,0,pa['width'],pa['height']);
@@ -169,7 +169,7 @@ var renderPlayarea = function() {
 	playarea.closePath();
 }
 
-});
+//});
 
 
 var testCollisions = function() {
@@ -274,7 +274,7 @@ document.onkeyup = function(ev)
 	}
 }
 
-socket.emit('run_game', function(data){
+
 	var main = function(){
 		testCollisions();
 		renderPlayarea();
@@ -282,7 +282,7 @@ socket.emit('run_game', function(data){
 	init();
 	game = setInterval(main, 25);
 
-});
+
 
 	
 });
