@@ -95,7 +95,6 @@ module.exports = function (grunt) {
 
 	// load grunt plugins
 	grunt.loadNpmTasks('grunt-beautify');
-	grunt.loadNpmTasks('grunt-contrib');
 	grunt.loadNpmTasks('grunt-crusher');
 	grunt.loadNpmTasks('grunt-css');
 

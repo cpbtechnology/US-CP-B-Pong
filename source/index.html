@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Node.js Multiplayer Pong Game</title>
-        
-        <!-- The stylesheets -->
-        <link rel="stylesheet" href="assets/css/styles.css" />
-        
-         <!-- Scripts -->
-         
+	<head>
+		<meta charset="utf-8" />
+		<title>Node.js Multiplayer Pong Game</title>
+		
+		<!-- The stylesheets -->
+		<link rel="stylesheet" href="assets/css/styles.css" />
+		
+		 <!-- Scripts -->
+		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+		<script src="assets/js/lib/dat.gui.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
-		<script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
 		<script src="assets/js/pong.js"></script>
 		<script src="assets/js/script.js"></script>
 		
-        <!--[if lt IE 9]>
-          <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-    </head>
-    
-    <body >
+		<!--[if lt IE 9]>
+		  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+	
+	<body >
 		<div id="score">
 			<span id="p1_scr">0</span>
 			<span id="p2_scr">0</span>
@@ -29,14 +29,14 @@
 			Your browser needs to support canvas for this to work!
 		</canvas>
 		
-		<hgroup id="instructions">		
+		<hgroup id="instructions">
 			<h1>Get Ready!</h1>
 			<h2>Are you ready to play node pong?</h2>
 			 <button id="User1">User #1</button>
-      <button id="User2">User #2</button>
+	  <button id="User2">User #2</button>
 		</hgroup>
-        <footer>
-	        <h2><i>NODE</i>PONG</h2>
-        </footer>
-    </body>
+		<footer>
+			<h2><i>NODE</i>PONG</h2>
+		</footer>
+	</body>
 </html>
