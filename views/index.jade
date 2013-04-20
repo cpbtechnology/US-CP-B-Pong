@@ -1,0 +1,26 @@
+html
+	head
+		title #{title}
+		link(rel="stylesheet", href="./stylesheets/style.css")
+			
+	body
+		.container
+			div#main
+	footer
+		h2 Node Pong
+
+block headScripts
+		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+		script(src="/socket.io/socket.io.js")
+		script(src="/javascripts/lib/dat.gui.min.js")
+		script(src="/javascripts/can.jquery.min.js")
+		script(src="/javascripts/app.js")
+		script(src="/javascripts/lib/dat.gui.js")
+		script(src="/javascripts/app/controllers/gamecontroller.js")
+		//script(src="/javascripts/pong.js")
+		script(src="/javascripts/app/models/room.js")
+		script
+			$(document).ready(function (){
+				window.Application.boot({
+				})
+			});

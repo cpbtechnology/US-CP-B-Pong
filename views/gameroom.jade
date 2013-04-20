@@ -1,0 +1,31 @@
+doctype 5
+html
+	head
+		title #{title}
+		link(rel="stylesheet", href="./stylesheets/style.css")
+			
+	body
+		#score
+			span#p1_scr
+			span#p2_scr
+			span#debug
+			canvas#paper(width="960", height="600", style="border: solid 1px #000; background: #FFF22D; margin: 0 auto; display: block;")
+	footer
+		h2 Node Pong
+
+block headScripts
+		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+		script(src="/socket.io/socket.io.js")
+		script(src="/javascripts/lib/dat.gui.min.js")
+		script(src="/javascripts/can.jquery.min.js")
+		script(src="/javascripts/app.js")
+		script(src="/javascripts/lib/dat.gui.js")
+		script(src="/javascripts/pong.js")
+		script(src="/javascripts/app/controllers/gamecontroller.js")
+		script(src="/javascripts/app/models/gamemodel.js")
+		script
+			$(document).ready(function (){
+				window.Application.boot({
+					
+				})
+			});
