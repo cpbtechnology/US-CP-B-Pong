@@ -59,17 +59,11 @@ io.sockets.on('connection', function(socket){
 		    }	 
 		    var users = io.sockets.clients(room._id).length;
 		    
-		    
+		    var whichPlayer = data.MobilePlayer;
 			socket.on('paddleLocation', function(data){
-				socket.broadcast.emit('sendPaddledata', data);
+				socket.broadcast.emit('sendPaddledata', { playerPaddle: whichPlayer, data:data});
 			});	
-		 
-			/*
-			socket.on('DrawFromPong', function(data){
-	  			socket.broadcast.emit('sendBalldata', data);
-	  		});
-	  		*/
-
+			
 		}); // End RoomModel
 	}); //End  Join
 }); // End Connection

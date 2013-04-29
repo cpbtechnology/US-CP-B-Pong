@@ -9,7 +9,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<!--script(src="http://debug.phonegap.com/target/target-script-min.js#accelerometer")--><script src="/javascripts/mobilepaddle.js"></script><div id="mobileContent"><h2>Get ready to play</h2><h2 id="power">Power = </h2></div>');
+buf.push('<script src="http://debug.phonegap.com/target/target-script-min.js#accelerometer"></script><script src="/javascripts/mobilepaddle.js"></script><div id="mobileContent"><h2>Welcome to Node Pong. Choose player;</h2><button id="player1">Join as Player 1</button><button id="player2">Join as Player 2</button></div><div id="player"></div><div id="power"></div>');
 }
 return buf.join("");
 }

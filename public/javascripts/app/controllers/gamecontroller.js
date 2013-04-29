@@ -74,6 +74,7 @@ if(self.socket){
 				}	
 				else {		
 					self.element.html(Templates["pages/partial.room.jade"]);
+					//self.element.html(Templates["pages/partial.mobileroom.jade"]); 
 				}
 				if(!self.socket){
 					self.socket = io.connect(window.location.origin); // points to root of current domain name url
