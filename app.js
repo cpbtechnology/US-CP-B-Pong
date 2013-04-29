@@ -49,23 +49,27 @@ server.listen(app.get('port'), function(){
 
 
 io.sockets.on('connection', function(socket){
-	
-	var users = io.sockets.clients().length;
-	
+		
 	socket.emit('connected', {message: 'Connected to NodePong!', from: "System"});
-	
-	socket.on('join', function (data) {
-		RoomModel.findById(data.room, 'title', function(err, room){
-		    	if(!err && data.room){
-			    	socket.join(room._id);
-			    }
-		    })
-		    socket.on('DrawFromPong', function(data){    
-			socket.broadcast.emit('sendBalldata', data);
-		})
+			
+	socket.on('join', function (data, ball) {
+	    RoomModel.findById(data.room, 'title', function(err, room){
+	    	if(!err && data.room){
+		    	socket.join(room._id);
+		    }	 
+		    var users = io.sockets.clients(room._id).length;
+		    
+		    
+			socket.on('paddleLocation', function(data){
+				socket.broadcast.emit('sendPaddledata', data);
+			});	
+		 
+			/*
+			socket.on('DrawFromPong', function(data){
+	  			socket.broadcast.emit('sendBalldata', data);
+	  		});
+	  		*/
 
-	});				
-
-	 
-	    
-});
+		}); // End RoomModel
+	}); //End  Join
+}); // End Connection

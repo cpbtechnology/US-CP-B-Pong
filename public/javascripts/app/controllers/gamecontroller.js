@@ -42,21 +42,12 @@
 			$('#instructions').hide();
 			var self = this;
 			self.socket= io.connect(window.location.origin);
-			self.socck
 			self.socket.emit("addPlayer", function(){
 				console.log('Add Player Controller');
 				
 			});
 			self.socket.on('playerInitialize', function(){ 
-				paddle_1['width'] = 18;
-				paddle_1['height'] = 192;
-				paddle_1['x'] = pa['player_margin'];
-				paddle_1['y'] = (pa['height'] / 2) - (paddle_1['height'] / 2);
-		
-				paddle_2['width'] = 18;
-				paddle_2['height'] = 192;
-				paddle_2['x'] = (pa['width'] - pa['player_margin'] - paddle_2['width']);
-				paddle_2['y'] = (pa['height'] / 2) - (paddle_2['height'] / 2);
+			
 			});
 			
 		},
@@ -76,27 +67,22 @@ if(self.socket){
 		    var self = this; // Self points to controller
 
 		    RoomModel.findOne({id: data.room_id}, function(room){
-				
+			
 				self.room = room;	
-				self.element.html(Templates["pages/partial.room.jade"]);
-					
+				if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+					self.element.html(Templates["pages/partial.mobileroom.jade"]); 
+				}	
+				else {		
+					self.element.html(Templates["pages/partial.room.jade"]);
+				}
 				if(!self.socket){
 					self.socket = io.connect(window.location.origin); // points to root of current domain name url
 				}
 				else{
 					self.socket.socket.connect();					
 				}
-				self.socket.emit('join', {room:room._id, roomName:room.title}); 
-				
-				self.socket.on('Draw', function(){  
-					console.log("onDraw from controller");
-					console.log("emit.sendDraw from controller");
-					self.socket.emit('sendDraw', {room:room._id, ball:ball})
-					
-					
-					
-				})
-	
+				self.socket.emit('join', {room:room._id, roomName:room.title});  
+
 				console.log('joined room: '+ room.title);
 			});
 			

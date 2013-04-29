@@ -1,4 +1,3 @@
-
 	//make a namespace
 	var app = app || {};
 
@@ -12,10 +11,7 @@
 		'pause': false
 	};
 	var socket = io.connect(app.config.server.url);
-	
-	socket.on('playerInitialize', function(){ 
-		
-	});
+	console.log(socket);
 	//setup dat-gui for visually modifying app settings
 	app.gui = new dat.GUI();
 	app.gui.vars = {};
@@ -109,57 +105,127 @@
 
 	function init() {
 
-		pa.width = 960;
-		pa.height = 600;
+		pa['width'] = 960;
+		pa['height'] = 600;
 		pa['player_margin'] = 30; //area behind player paddles
 		pa['foreground'] = "#EC008C";
 		pa['background'] = "#FFF22D";
 
-		divider['pos'] = pa.width / 2;
-		divider.width = 4;	
-			
-		
-		ball.width = 30;
-		ball.height = 30;
-		ball.x = (pa.width / 2) - (ball.width / 2);
-		ball.y = (pa.height / 2) - (ball.height / 2);
+		divider['pos'] = pa['width'] / 2;
+		divider['width'] = 4;
+
+		paddle_1['width'] = 18;
+		paddle_1['height'] = 192;
+		paddle_1['x'] = pa['player_margin'];
+		paddle_1['y'] = (pa['height'] / 2) - (paddle_1['height'] / 2);
+
+		paddle_2['width'] = 18;
+		paddle_2['height'] = 192;
+		paddle_2['x'] = (pa['width'] - pa['player_margin'] - paddle_2['width']);
+		paddle_2['y'] = (pa['height'] / 2) - (paddle_2['height'] / 2);
+
+		ball['width'] = 30;
+		ball['height'] = 30;
+		ball['x'] = (pa['width'] / 2) - (ball['width'] / 2);
+		ball['y'] = (pa['height'] / 2) - (ball['height'] / 2);
 
 		ball_direction = Math.random() * 360; //initialize ball direction, which is determined by angle, at random
 		speed = app.config.speed;
-				
 		
 	}
 					
-
-	renderPlayarea= function(ball) {
+	var renderPlayarea = function () {
+	/*
+	
 		playarea.beginPath();
+
+		playarea.clearRect(0, 0, pa['width'], pa['height']);
+		playarea.fillStyle = pa['background'];
+		playarea.strokeStyle = pa['foreground'];
+		playarea.fillRect(0, 0, pa['width'], pa['height']);
+
+		//move paddles
+		if(player_1_direction != null) {
+			if(player_1_direction == up) paddle_1['y'] = paddle_1['y'] - paddle_inc;
+			else paddle_1['y'] = paddle_1['y'] + paddle_inc;
+		}
+		if(player_2_direction != null) {
+			if(player_2_direction == up) paddle_2['y'] = paddle_2['y'] - paddle_inc;
+			else paddle_2['y'] = paddle_2['y'] + paddle_inc;
+		}
+		//playarea.rect(paddle_1['x'], paddle_1['y'], paddle_1['width'], paddle_1['height']);
+		playarea.rect(paddle_2['x'], paddle_2['y'], paddle_2['width'], paddle_2['height']);
+
+		//move ball
+		playarea.rect(ball['x'], ball['y'], ball['width'], ball['height']);
+		ball['x'] = ball['x'] + Math.cos((ball_direction) * Math.PI / 180) * speed;
+		ball['y'] = ball['y'] + Math.sin((ball_direction) * Math.PI / 180) * speed;
+
+
+		playarea.fillStyle = pa['foreground'];
+		playarea.fill();
+
+		//redraw divider
+		playarea.lineWidth = divider['width'];
+		playarea.lineTo(divider['pos'], 0);
+		playarea.lineTo(divider['pos'], pa['height'] = 600);
+		playarea.lineWidth = 1;
+		playarea.closePath();
+		
+*/
+		
+	};
+	
+	var testCollisions = function() {
+		//make sure paddles don't go beyond play area
+		if(((paddle_1['y'] <= 0) && (player_1_direction == up)) || ((paddle_1['y'] >= (pa['height'] - paddle_1['height'])) && (player_1_direction == down))) player_1_direction = null;
+		if(((paddle_2['y'] <= 0) && (player_2_direction == up)) || ((paddle_2['y'] >= (pa['height'] - paddle_2['height'])) && (player_2_direction == down))) player_2_direction = null;
+	
+		//check to see if ball went beyond paddles, and if so, score accordingly and reset playarea
+		if(ball['x'] <= 0) {
+			//setScore(player_2);
+			init()
+			sleep(1000);
+		}
+		if(ball['x'] >= (pa['width'] - ball['width'])) {
+			//setScore(player_1);
+			init();
+			sleep(1000);
+		}
+	
+		//check to see if ball hit top or bottom wall. if so, change direction
+		if((ball['y'] >= (pa['height'] - ball['height'])) || ball['y'] <= 0) ball_direction = -ball_direction;
+	
+		//check to see if the ball hit a paddle, and if so, change ball angle dependant on where it hit the paddle
+		if((ball['x'] <= (paddle_1['x'] + paddle_1['width'])) && (ball['y'] >= paddle_1['y']) && (ball['y'] <= (paddle_1['y'] + paddle_1['height']))) {
+			ball_direction = -ball_direction / 2;
+			speed += .5;
+		}
+		if(((ball['x'] + ball['width']) >= paddle_2['x']) && (ball['y'] >= paddle_2['y']) && (ball['y'] <= (paddle_2['y'] + paddle_2['height']))) {
+			ball_direction = (180 + ball_direction) / 2;
+			speed += .5;
+		}
+	}
+	
+/*
+	var broadcastElements= function(data) {
+		playarea.beginPath();		
 		
 		playarea.clearRect(0, 0, pa.width, pa.height);
 		playarea.fillStyle = pa['background'];
 		playarea.strokeStyle = pa['foreground'];
 		playarea.fillRect(0, 0, pa.width, pa.height);
-
-
-		//move paddles
-		if(player_1_direction != null) {
-			if(player_1_direction == up) paddle_1.y = paddle_1.y - paddle_inc;
-			else paddle_1.y = paddle_1.y + paddle_inc;
-		}
-		if(player_2_direction != null) {
-			if(player_2_direction == up) paddle_2.y = paddle_2.y - paddle_inc;
-			else paddle_2.y = paddle_2.y + paddle_inc;
-		}
-		playarea.rect(paddle_1.x, paddle_1.y, paddle_1.width, paddle_1.height);
-		playarea.rect(paddle_2.x, paddle_2.y, paddle_2.width, paddle_2.height);
-				
-		
-		//move ball
-        playarea.rect(ball.x, ball.y, ball.width, ball.height);
-        
-		ball.x = ball.x + Math.cos((ball_direction) * Math.PI / 180) * speed;
-		ball.y = ball.y + Math.sin((ball_direction) * Math.PI / 180) * speed;
-		
 	
+		//playarea.rect(paddle_1.x, data.paddle_1Y, paddle_1.width, paddle_1.height);
+		playarea.rect(paddle_2.x, data.paddle_2Y, paddle_2.width, paddle_2.height);
+		
+		playarea.rect(data.ballX, data.ballY, ball.width, ball.height);
+		
+		
+		playarea.fillStyle = pa['foreground'];
+		playarea.fill();
+		playarea.closePath();
+		
 		playarea.fillStyle = pa['foreground'];
 		playarea.fill();
 		
@@ -169,44 +235,35 @@
 		playarea.lineTo(divider['pos'], pa.height = 600);
 		playarea.lineWidth = 1;
 		playarea.closePath();
-		this.socket.emit('DrawFromPong', {ballX:ball.x, ballY:ball.y, ballW:ball.width, ballH:ball.height});
+	}
+*/
+var broadcastPaddle= function(data) {
+		playarea.beginPath();		
 		
-	};
-	
-	
-	//});
-	
-var testCollisions = function(ball) {
-			//make sure paddles don't go beyond play area
-			if(((paddle_1.y <= 0) && (player_1_direction == up)) || ((paddle_1.y >= (pa.height - paddle_1.height)) && (player_1_direction == down))) player_1_direction = null;
-			if(((paddle_2.y <= 0) && (player_2_direction == up)) || ((paddle_2.y >= (pa.height - paddle_2.height)) && (player_2_direction == down))) player_2_direction = null;
-
-			//check to see if ball went beyond paddles, and if so, score accordingly and reset playarea
-			if(ball.x <= 0) {
-			//	setScore(player_2);
-				init()
-				sleep(1000);
-			}
-			if(ball.x >= (pa.width - ball.width)) {
-			//	setScore(player_1);
-				init();
-				sleep(1000);
-			}
-
-			//check to see if ball hit top or bottom wall. if so, change direction
-			if((ball.y >= (pa.height - ball.height)) || ball.y <= 0) ball_direction = -ball_direction;
-
-			//check to see if the ball hit a paddle, and if so, change ball angle dependant on where it hit the paddle
-			if((ball.x <= (paddle_1.x + paddle_1.width)) && (ball.y >= paddle_1.y) && (ball.y <= (paddle_1.y + paddle_1.height))) {
-				ball_direction = -ball_direction / 2;
-				speed += .5;
-			}
-			if(((ball.x + ball.width) >= paddle_2.x) && (ball.y >= paddle_2.y) && (ball.y <= (paddle_2.y + paddle_2.height))) {
-				ball_direction = (180 + ball_direction) / 2;
-				speed += .5;
-			}
-		}
-
+		playarea.clearRect(0, 0, pa.width, pa.height);
+		playarea.fillStyle = pa['background'];
+		playarea.strokeStyle = pa['foreground'];
+		playarea.fillRect(0, 0, pa.width, pa.height);
+		console.log(data);
+		playarea.rect(paddle_1.x, data.paddlePos, paddle_1.width, paddle_1.height);
+		//playarea.rect(paddle_2.x, data.paddle_2Y, paddle_2.width, paddle_2.height);
+		//playarea.rect(data.ballX, data.ballY, ball.width, ball.height);
+		
+		
+		playarea.fillStyle = pa['foreground'];
+		playarea.fill();
+		playarea.closePath();
+		
+		playarea.fillStyle = pa['foreground'];
+		playarea.fill();
+		
+		//redraw divider
+		playarea.lineWidth = divider.width;
+		playarea.lineTo(divider['pos'], 0);
+		playarea.lineTo(divider['pos'], pa.height = 600);
+		playarea.lineWidth = 1;
+		playarea.closePath();
+	}
 
 		/*
 var setScore = function(p) {
@@ -222,23 +279,23 @@ var setScore = function(p) {
 
 */
 
-		//handle input
-		document.onkeydown = function(ev) {
-			switch(ev.keyCode) {
-			case key_W:
-				player_1_direction = up;
-				break;
-			case key_S:
-				player_1_direction = down;
-				break;
-			case key_up:
-				player_2_direction = up;
-				break;
-			case key_down:
-				player_2_direction = down;
-				break;
-			}
+	//handle input
+	document.onkeydown = function(ev) {
+		switch(ev.keyCode) {
+		case key_W:
+			player_1_direction = up;
+			break;
+		case key_S:
+			player_1_direction = down;
+			break;
+		case key_up:
+			player_2_direction = up;
+			break;
+		case key_down:
+			player_2_direction = down;
+			break;
 		}
+	}
 
 	document.onkeyup = function(ev) {
 		switch(ev.keyCode) {
@@ -266,15 +323,27 @@ var setScore = function(p) {
 
 
 	var main = function() {
-		var self = this;
-		this.renderPlayarea(ball);
-    	self.socket.on('sendBalldata', function(data){
-				self.renderPlayarea(ball);
-				
-			});
-		
-		}
-		
+		self.testCollisions();
+		self.renderPlayarea();
+		this.socket.emit('DrawFromPong', {ballX:ball.x, ballY:ball.x, paddle_1Y:paddle_1.y, paddle_2Y:paddle_2.y, pa:pa}); 
+    }
+
+    var self = this;
+	socket.on('sendBalldata', function(data){
+		console.log('guest data');
+		self.broadcastElements(data);
+	});
+	socket.on('sendPaddledata', function(data){
+		console.log('guest data');
+		self.broadcastPaddle(data);
+	});
+	
 	init();
-	game = setInterval(main, 100);
+
+
+		game = setInterval(main, 10);		
+	
+	
+	
+    
 

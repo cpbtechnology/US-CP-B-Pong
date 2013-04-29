@@ -4,12 +4,22 @@ var jade=function(exports){Array.isArray||(Array.isArray=function(arr){return"[o
 
  var templates = {};
 
+templates["pages/partial.mobileroom.jade"] = function anonymous(locals, attrs, escape, rethrow, merge) {
+attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+var buf = [];
+with (locals || {}) {
+var interp;
+buf.push('<!--script(src="http://debug.phonegap.com/target/target-script-min.js#accelerometer")--><script src="/javascripts/mobilepaddle.js"></script><div id="mobileContent"><h2>Get ready to play</h2><h2 id="power">Power = </h2></div>');
+}
+return buf.join("");
+}
+
 templates["pages/partial.room.jade"] = function anonymous(locals, attrs, escape, rethrow, merge) {
 attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<script src="/javascripts/pong.js"></script><div id="score"><span id="p1_scr"></span><span id="p2_scr"></span><span id="debug"></span></div><canvas id="paper" width="960" height="600" style="border: solid 1px #000; background: #FFF22D; margin: 0 auto; display: block;"></canvas><div id="instructions"><h1>Get Ready for NodePong!</h1><h2>Would you like to:</h2><a id="Play" href="#">Play</a><a id="Watch" href="#">Watch</a></div>');
+buf.push('<script src="/javascripts/pong.js"></script><div id="score"><span id="p1_scr"></span><span id="p2_scr"></span><span id="debug"></span></div><canvas id="paper" width="960" height="600" style="border: solid 1px #000; background: #FFF22D; margin: 0 auto; display: block;"></canvas><div id="instructions"><h1>Get Ready for NodePong!</h1><h2>Waiting for players...</h2><ul><li id="player1">Player 1</li><li id="player2">Player 2</li></ul></div>');
 }
 return buf.join("");
 }
