@@ -26,7 +26,7 @@
 
 	
 	var beta;
-	var paddlePos = 215;
+	var paddlePos = 400;
 	var self = this;
 	startPaddle = function(){
 		window.ondevicemotion = function(event) {
