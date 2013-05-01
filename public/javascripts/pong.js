@@ -6,7 +6,7 @@
 		'server': {
 			'url': 'http://localhost:3000'
 		},
-		'speed': 1.2, //controls the speed of the ball
+		'speed': 2, //controls the speed of the ball
 		'paddle_inc': 30, //how many pixels paddle can move in either direction
 		'pause': false
 	};
@@ -16,7 +16,7 @@
 	app.gui.vars = {};
 	app.gui.vars.paddle_inc = app.gui.add(app.config, 'paddle_inc');
 	app.gui.vars.speed = app.gui.add(app.config, 'speed', {
-		'Slow': 2,
+		'Slow': 4,
 		'Normal': 4,
 		'Fast': 16
 	});
@@ -37,7 +37,7 @@
 		canvas = $('#paper'),
 		ctx = canvas[0].getContext('2d'),
 		instructions = $('#instructions');
-		
+	
 	// Generate an unique ID
 	var id = Math.round($.now() * Math.random());
 
@@ -103,29 +103,32 @@
 	}
 
 	function init() {
-
-		pa['width'] = 960;
-		pa['height'] = 600;
-		pa['player_margin'] = 30; //area behind player paddles
-		pa['foreground'] = "#EC008C";
-		pa['background'] = "#FFF22D";
-
+		pa['width'] = 900;
+		pa['height'] = 400;
+		pa['player_margin'] = 15; //area behind player paddles
+		pa['foreground'] = "#ffffff";
+		pa['background'] = "#EC008C";
+		img = new Image();
+		img.src = '../images/pong-bg.jpg';
+		playarea.drawImage(img,0,0);
+		
+		
 
 		divider['pos'] = pa['width'] / 2;
 		divider['width'] = 4;
 
-		paddle_1['width'] = 18;
-		paddle_1['height'] = 192;
+		paddle_1['width'] = 8;
+		paddle_1['height'] = 120;
 		paddle_1['x'] = pa['player_margin'];
 		paddle_1['y'] = (pa['height'] / 2) - (paddle_1['height'] / 2);
 
-		paddle_2['width'] = 18;
-		paddle_2['height'] = 192;
+		paddle_2['width'] = 8;
+		paddle_2['height'] = 120;
 		paddle_2['x'] = (pa['width'] - pa['player_margin'] - paddle_2['width']);
 		paddle_2['y'] = (pa['height'] / 2) - (paddle_2['height'] / 2);
 
-		ball['width'] = 30;
-		ball['height'] = 30;
+		ball['width'] = 20;
+		ball['height'] = 20;
 		ball['x'] = (pa['width'] / 2) - (ball['width'] / 2);
 		ball['y'] = (pa['height'] / 2) - (ball['height'] / 2);
 
@@ -141,6 +144,7 @@
 		playarea.fillStyle = pa['background'];
 		playarea.strokeStyle = pa['foreground'];
 		playarea.fillRect(0, 0, pa['width'], pa['height']);
+		playarea.drawImage(img,0, 0);
 		
 		//move paddles
 		if(player_1_direction != null) {
@@ -172,7 +176,7 @@
 		//redraw divider
 		playarea.lineWidth = divider['width'];
 		playarea.lineTo(divider['pos'], 0);
-		playarea.lineTo(divider['pos'], pa['height'] = 600);
+		playarea.lineTo(divider['pos'], pa['height'] = 467);
 		playarea.lineWidth = 1;
 		playarea.closePath();
 	
@@ -198,7 +202,7 @@
 			}
 
 			//check to see if ball hit top or bottom wall. if so, change direction
-			if((ball['y'] >= (pa['height'] - ball['height'])) || ball['y'] <= 0) {
+			if((ball['y'] >= (pa['height'] - ball['height'])) || ball['y'] <= 8) {
 					ball_direction = -ball_direction;
 					var audioElement = document.createElement('audio');
 				audioElement.setAttribute('src', 'http://www.sounddogs.com/sound-effects/2219/mp3/413585_SOUNDDOGS__sp.mp3');

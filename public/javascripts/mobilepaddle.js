@@ -44,8 +44,8 @@
 				paddlePos = 0;
 				
 			}
-			if (paddlePos >= 400){
-				paddlePos = 400;
+			if (paddlePos >= 355){
+				paddlePos = 355;
 				
 			}
 			socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer: MobilePlayer});

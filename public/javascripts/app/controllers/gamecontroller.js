@@ -53,11 +53,7 @@
 		},
 		"route": function(data, room){
 			var self=this;
-		      /*
-if(self.socket){
-		     	self.socket.emit('leave', {room:self.room._id, from:self.options.user.displayName});
-		      }
-*/
+
 		      RoomModel.findAll({}, function(rooms){ //.findAll is an ajax call to the back end
 		        self.element.html(Templates["pages/partial.rooms.jade"]({rooms:rooms})); //renders html partial.rooms.jade
 		      });	

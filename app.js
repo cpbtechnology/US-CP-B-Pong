@@ -63,7 +63,7 @@ io.sockets.on('connection', function(socket){
 			socket.on('paddleLocation', function(data){
 				socket.broadcast.emit('sendPaddledata', { playerPaddle: whichPlayer, data:data});
 			});	
-			
+
 		}); // End RoomModel
 	}); //End  Join
 }); // End Connection
