@@ -1,0 +1,3 @@
+# Database Configuration
+
+The configuration will hold all files and instructions to set up the project. This will include db files, env settings, etc...
