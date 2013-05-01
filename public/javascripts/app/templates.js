@@ -19,7 +19,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<script src="/javascripts/pong.js"></script><div id="score"><span id="p1_scr"></span><span id="p2_scr"></span><span id="debug"></span></div><canvas id="paper" width="900" height="600" style="margin: 50px auto; display: block;"></canvas><div id="instructions"><h1>Welcome to NodePong, a beautiful spin on a simple game. Leveraging node.js, we are able to create websockets that offer instant access to sharing data with a website.</h1><h2>Waiting for players...</h2><ul><li id="player1">Player 1</li><li id="player2">Player 2</li></ul></div><footer><h2>Node Pong</h2></footer>');
+buf.push('<script src="/javascripts/pong.js"></script><div id="score"><span id="p1_scr"></span><span id="p2_scr"></span><span id="debug"></span></div><canvas id="paper" width="900" height="475" style="margin: 50px auto; display: block;"></canvas><div id="instructions"><h1>Welcome to NodePong	</h1><h2>Connect to CPB_STAFF wifi and go to http://labs.plus.cpbgroup.net/brochester/pong to play.</h2><ul><div id="player1" class="currentPlayers">Player 1</div><div id="player2" class="currentPlayers">Player 2</div></ul></div><footer><h2>Node Pong</h2></footer>');
 }
 return buf.join("");
 }
