@@ -66,7 +66,7 @@
 			
 				self.room = room;	
 				if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-					self.element.html(Templates["pages/partial.mobileroom.jade"]); 
+					self.element.html(Templates["pages/partial.mobileroom.jade"]);
 				}	
 				else {		
 					self.element.html(Templates["pages/partial.room.jade"]);

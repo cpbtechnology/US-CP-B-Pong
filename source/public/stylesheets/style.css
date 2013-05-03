@@ -47,17 +47,19 @@ header {
   color: #000;
 }
 h1 {
-  font-size: 22px;
+  font-size: 24px;
+  font-weight: bold;
   padding-bottom: 8px;
+  text-align: center;
 }
 h2 {
-  font-size: 13px;
-  font-weight: normal;
+  font-size: 22px;
+  font-weight: bold;
   padding-bottom: 8px;
 }
 h3 {
-  font-size: 12px;
-  font-weight: normal;
+  font-size: 18px;
+  font-weight: bold;
   font-style: italic;
   color: #999;
 }
@@ -73,6 +75,27 @@ h3 {
   width: 15px;
   height: 22px;
   background: url("../images/pointer.png") no-repeat -4px 0;
+}
+/*----------------------------
+	Mobile View
+-----------------------------*/
+#mobileContent h1 {
+  font-size: 100px;
+  font-weight: bold;
+  padding-bottom: 8px;
+  text-align: center;
+}
+#mobileContent #player1 {
+  height: 200px;
+  width: 90%;
+  margin: 0 auto 100px auto;
+  font-size: 80px;
+}
+#mobileContent #player2 {
+  height: 200px;
+  width: 90%;
+  margin: 0 auto;
+  font-size: 80px;
 }
 /*----------------------------
 	The Footer

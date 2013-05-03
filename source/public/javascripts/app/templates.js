@@ -9,7 +9,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<script src="http://debug.phonegap.com/target/target-script-min.js#accelerometer"></script><script src="/javascripts/mobilepaddle.js"></script><div id="mobileContent"><h2>Welcome to Node Pong. Choose player;</h2><button id="player1">Join as Player 1</button><button id="player2">Join as Player 2</button></div><div id="player"></div><div id="power"></div><div id="paddlePosition"></div>');
+buf.push('<script src="http://debug.phonegap.com/target/target-script-min.js#accelerometer"></script><script src="/javascripts/mobilepaddle.js"></script><div id="mobileContent"><h1>Welcome to Node Pong. </h1><br>\n<br><button id="player1">Join as Player 1</button><button id="player2">Join as Player 2</button></div><div id="player"></div><div id="power"></div><div id="paddlePosition"></div>');
 }
 return buf.join("");
 }
@@ -19,7 +19,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<script src="/javascripts/pong.js"></script><div id="score"><span id="p1_scr"></span><span id="p2_scr"></span><span id="debug"></span></div><canvas id="paper" width="900" height="475" style="margin: 50px auto; display: block;"></canvas><div id="instructions"><h1>Welcome to NodePong	</h1><h2>Connect to CPB_STAFF wifi and go to http://labs.plus.cpbgroup.net/brochester/pong to play.</h2><ul><div id="player1" class="currentPlayers">Player 1</div><div id="player2" class="currentPlayers">Player 2</div></ul></div><footer><h2>Node Pong</h2></footer>');
+buf.push('<script src="/javascripts/pong.js"></script><div id="score"><span id="p1_scr"></span><span id="p2_scr"></span><span id="debug"></span></div><canvas id="paper" width="900" height="475" style="margin: 50px auto; display: block;"></canvas><div id="instructions"><h1>Welcome to NodePong</h1><div>Please connect to CPB_STAFF wifi and go to http://labs.plus.cpbgroup.net/brochester/pong to play.</div><ul><div id="player1" class="currentPlayers">Player 1</div><div id="player2" class="currentPlayers">Player 2</div></ul></div><footer><h2>Node Pong</h2></footer>');
 }
 return buf.join("");
 }
