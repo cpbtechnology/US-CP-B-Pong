@@ -8,13 +8,16 @@
 	};
 	var socket = io.connect(window.location);
 
-	var MobilePlayer = 0;
-	
+	socket.emit('mobilePlayer', {players: 'players'});
+	socket.on('PlayerCount', function(data){
+		var MobilePlayer = 0;
+
 	$('#player1').click(function(){
 		MobilePlayer = 1;
 		$('#player').html( 'Player =  ' + MobilePlayer );
 		$('#mobileContent').hide();
-		startPaddle();
+		this.startPaddle();
+		alert('made it');
 	})
 	$('#player2').click(function(){
 		MobilePlayer = 2;
@@ -22,8 +25,23 @@
 		$('#mobileContent').hide();
 		startPaddle();
 	})
-		
-
+	/*
+	
+		//if (data.MobilePlayer == 1){
+			$('#player').html( 'Player =  ' + data.MobilePlayer );
+			$('#mobileContent').hide();
+			$('#player1').addClass('connected');
+			startPaddle();
+				
+		//}
+		if (data.MobilePlayer == 2) {
+			$('#player').html( 'Player =  ' + data.MobilePlayer );
+			$('#mobileContent').hide();
+			$('#player2').addClass('connected');
+			startPaddle();	
+		}
+*/
+	});
 	
 	var beta;
 	var paddlePos = 400;

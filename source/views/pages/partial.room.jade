@@ -1,20 +1,30 @@
 
 block append head
 	script(src="/javascripts/pong.js")
-#score
-	span#p1_scr
-	span#p2_scr
-	span#debug
-canvas#paper(width="900", height="475", style="margin: 50px auto; display: block;")
+#room
+#canvas
+	canvas#paper(width="900", height="475", style="margin: 50px auto; display: block;")
+	#score
+		span#p1_scr 0 
+		span#p2_scr 0
 
 #instructions
 	h1 Welcome to NodePong
+<<<<<<< HEAD
 	
 	div Please connect to CPB_STAFF wifi and go to http://labs.plus.cpbgroup.net/brochester/pong to play.
 
 	ul
 		#player1.currentPlayers Player 1
 		#player2.currentPlayers Player 2
+=======
+	ul#geturl
+		li#qr
+		li OR
+		li#link goo.gl/AaUMT 
+	#player1.currentPlayers Player 1
+	#player2.currentPlayers Player 2
+>>>>>>> refs/heads/feature-dynamicPlayerAdding
 footer
 	h2 Node Pong
 	

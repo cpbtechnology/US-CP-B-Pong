@@ -19,38 +19,6 @@
 	      		window.location.hash = '#!'+room._id;
 	      	});
 	      },
-
-		"a click": function(button, event ) {
-			
-			var self = this;
-			if (event.target.id === "Play"){
-				event.preventDefault();
-				self.isPlayer();
-				
-			}
-			if (event.target.id === "Watch"){
-				event.preventDefault();
-				self.isViewer();
-			}
-			
-		},
-		'isViewer': function(){
-			$('#instructions').hide();
-			
-		},
-		'isPlayer': function(){
-			$('#instructions').hide();
-			var self = this;
-			self.socket= io.connect(window.location.origin);
-			self.socket.emit("addPlayer", function(){
-				console.log('Add Player Controller');
-				
-			});
-			self.socket.on('playerInitialize', function(){ 
-			
-			});
-			
-		},
 		"route": function(data, room){
 			var self=this;
 
@@ -61,7 +29,7 @@
 		},
 		 ":room_id route": function(data, room) {
 		    var self = this; // Self points to controller
-
+		    
 		    RoomModel.findOne({id: data.room_id}, function(room){
 			
 				self.room = room;	
