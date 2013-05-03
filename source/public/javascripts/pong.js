@@ -49,8 +49,6 @@
 
 	//var socket = io.connect(app.config.server.url);
 
-
-
 	playarea_canvas = $('#paper');
 	playarea = playarea_canvas[0].getContext('2d');
 	
@@ -112,8 +110,6 @@
 		img.src = '../images/pong-bg.jpg';
 		playarea.drawImage(img,0,0);
 		
-		
-
 		divider['pos'] = pa['width'] / 2;
 		divider['width'] = 4;
 
@@ -156,13 +152,9 @@
 			else paddle_2['y'] = paddle_2['y'] + paddle_inc;
 		}
 
-			playarea.rect(paddle_1.x, paddle1Pos, paddle_1.width, paddle_1.height);
+		playarea.rect(paddle_1.x, paddle1Pos, paddle_1.width, paddle_1.height);		
+		playarea.rect(paddle_2.x, paddle2Pos, paddle_2.width, paddle_2.height);
 
-		
-			playarea.rect(paddle_2.x, paddle2Pos, paddle_2.width, paddle_2.height);
-
-		//playarea.rect(paddle_1['x'], paddle_1['y'], paddle_1['width'], paddle_1['height']);
-		//playarea.rect(paddle_2['x'], paddle_2['y'], paddle_2['width'], paddle_2['height']);
 	
 		//move ball
 		playarea.rect(ball['x'], ball['y'], ball['width'], ball['height']);
@@ -230,7 +222,7 @@
 	
 	
 	
-var setScore = function(p) {
+	var setScore = function(p) {
 			if(p == player_1) {
 				player_1_scr++;
 				$('#p1_scr').html("Player 1 = "+player_1_scr);
@@ -240,8 +232,6 @@ var setScore = function(p) {
 				$('#p2_scr').html("Player 2 = "+player_2_scr);
 			}
 		}
-
-
 
 	//handle input
 	document.onkeydown = function(ev) {
@@ -287,7 +277,6 @@ var setScore = function(p) {
 
 
 	var main = function() {
-		
 		self.renderPlayarea();
     }
 

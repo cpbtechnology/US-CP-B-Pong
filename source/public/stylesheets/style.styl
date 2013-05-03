@@ -27,7 +27,7 @@ body{
 
 a, a:visited {
 	outline:none
-	color:#43819b
+	color:#fff
 }
 
 a:hover{
@@ -68,30 +68,57 @@ h2{
 	padding-bottom 8px
 }
 
-h3{
+h3
 	font-size 12px
 	font-weight normal
 	font-style italic
 	color #999
-}
-#container{
+
+#container
 	width 960px
 	margin 0 auto
-}
 
-#cursors{
-	position:relative
-}
+#canvas
+	position relative
 
-#cursors .cursor{
-	position:absolute
-	width:15px
-	height:22px
-	background:url('../images/pointer.png') no-repeat -4px 0
-}
+ul#geturl li
+	display inline-block
+	float left
+	text-align center
+	width 20px
+	height 150px;
+	line-height 100px;
 
+ul#geturl #qr
+	background url('../images/1367511948-5889.svg') no-repeat
+	display block
+	background-size 70%
+	width 200px
+	
+ul#geturl li#link 
+	width 180px
+	
+#score 
+	position absolute
+	bottom 30px
+	width 50px
+	left 425px 
 
+.connected:after
+	background url('../images/checkmark.png') no-repeat
+	height 30px
+	width 35px
+	display block
+	content " "
+	position absolute
+	right -17px
+	top -8px
 
+.currentPlayers
+	display block
+	width 100px;
+	float left;
+	position relative
 /*----------------------------
 	The Footer
 -----------------------------*/
