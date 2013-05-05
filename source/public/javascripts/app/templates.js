@@ -29,7 +29,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<form><input name="title" placeholder="room title" type="text"/><input type="submit" value="Create Room"/></form><ul>');
+buf.push('<h1>Current Rooms</h1><ul>');
 // iterate rooms
 ;(function(){
   if ('number' == typeof rooms.length) {
@@ -37,7 +37,7 @@ buf.push('<form><input name="title" placeholder="room title" type="text"/><input
     for (var $index = 0, $$l = rooms.length; $index < $$l; $index++) {
       var room = rooms[$index];
 
-buf.push('<li><a');
+buf.push('<li class="rooms"><a');
 buf.push(attrs({ 'href':("#!" + (room._id) + "") }, {"href":true}));
 buf.push('>' + escape((interp = room.title) == null ? '' : interp) + '</a></li>');
     }
@@ -47,7 +47,7 @@ buf.push('>' + escape((interp = room.title) == null ? '' : interp) + '</a></li>'
     for (var $index in rooms) {
       $$l++;      var room = rooms[$index];
 
-buf.push('<li><a');
+buf.push('<li class="rooms"><a');
 buf.push(attrs({ 'href':("#!" + (room._id) + "") }, {"href":true}));
 buf.push('>' + escape((interp = room.title) == null ? '' : interp) + '</a></li>');
     }
@@ -55,7 +55,7 @@ buf.push('>' + escape((interp = room.title) == null ? '' : interp) + '</a></li>'
   }
 }).call(this);
 
-buf.push('</ul><footer><h2>Node Pong</h2></footer>');
+buf.push('</ul><br>\n<br>\n<br>\n<br><form><div id="formWrapper"><input id="title" name="title" placeholder="Your Room Title" type="text"/><input type="submit" value="Create Room"/></div></form><footer><h2>Node Pong</h2></footer>');
 }
 return buf.join("");
 }

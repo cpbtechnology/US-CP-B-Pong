@@ -49,16 +49,16 @@ section, footer, header{
 	width 400px
 	top 50%
 	left 50%
-	margin -120px 0 0 -225px
-	text-align center
-	padding 25px
-	border-radius 10px
-	box-shadow 0 0 3px rgba(100, 100, 100, 0.1), 0 3px 1px #D4D4D4
-	color #000
+	margin -120px 0 0 -400px
+    padding 25px
+    position fixed
+    text-align center
+    top: 50%
+    width: 800px
 }
 
 h1{
-	font-size 24px
+	font-size 84px
 	font-weight bold
 	padding-bottom 8px
 	text-align center
@@ -70,26 +70,53 @@ h2{
 	padding-bottom 8px
 }
 
-<<<<<<< HEAD
+
 h3{
 	font-size 18px
 	font-weight bold
-=======
-h3
-	font-size 12px
 	font-weight normal
->>>>>>> refs/heads/feature-dynamicPlayerAdding
 	font-style italic
 	color #999
+}
 
-#container
+#container{
 	width 960px
 	margin 0 auto
+}
 
-#canvas
+#canvas{
 	position relative
+}
 
-<<<<<<< HEAD
+.rooms{
+	font-size 60px
+	text-align center
+	display block
+	margin 20px 0
+}
+
+#formWrapper{
+	width 410px
+	margin 0 auto
+}
+
+#formWrapper input[type="text"]{
+	width: 400px;
+	height: 120px;
+	font-size: 50px;
+	border: none;
+}
+
+#formWrapper input[type="submit"]{
+	width 400px;
+	height 120px;
+	font-size 50px;
+	border none;
+	margin 10px 0 
+}
+
+
+
 /*----------------------------
 	Mobile View
 -----------------------------*/
@@ -103,6 +130,7 @@ h3
 
 
 #mobileContent #player1{
+	display block
 	height 200px
 	width 90%
 	margin 0 auto 100px auto
@@ -110,36 +138,41 @@ h3
 }
 
 #mobileContent #player2{
+	display block
 	height 200px
 	width 90%
 	margin 0 auto
 	font-size 80px
 }
-=======
-ul#geturl li
+
+ul#geturl li{
 	display inline-block
 	float left
 	text-align center
 	width 20px
 	height 150px;
 	line-height 100px;
+}
 
-ul#geturl #qr
+ul#geturl #qr{
 	background url('../images/1367511948-5889.svg') no-repeat
 	display block
 	background-size 70%
 	width 200px
+}
 	
-ul#geturl li#link 
+ul#geturl li#link {
 	width 180px
-	
-#score 
+}
+
+#score{ 
 	position absolute
 	bottom 30px
 	width 50px
 	left 425px 
+}
 
-.connected:after
+.connected:after{
 	background url('../images/checkmark.png') no-repeat
 	height 30px
 	width 35px
@@ -148,17 +181,18 @@ ul#geturl li#link
 	position absolute
 	right -17px
 	top -8px
->>>>>>> refs/heads/feature-dynamicPlayerAdding
+}
 
-.currentPlayers
+.currentPlayers{
 	display block
 	width 100px;
 	float left;
 	position relative
+}
+
 /*----------------------------
 	The Footer
 -----------------------------*/
-
 
 footer{
 	background-color #111111

@@ -75,9 +75,6 @@
     		$('#paddlePosition').html(paddlePos);
     		//$('#paddlePosition').html(touch.pageX + " - " + touch.pageY + " Height - " + $(window).height());
     		socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer: MobilePlayer});
-    		
-
-
 		}, false);
 	}
 

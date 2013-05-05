@@ -39,15 +39,15 @@ header {
   width: 400px;
   top: 50%;
   left: 50%;
-  margin: -120px 0 0 -225px;
-  text-align: center;
+  margin: -120px 0 0 -400px;
   padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 0 3px rgba(100,100,100,0.1), 0 3px 1px #d4d4d4;
-  color: #000;
+  position: fixed;
+  text-align: center;
+  top: 50%;
+  width: 800px;
 }
 h1 {
-  font-size: 24px;
+  font-size: 84px;
   font-weight: bold;
   padding-bottom: 8px;
   text-align: center;
@@ -60,6 +60,7 @@ h2 {
 h3 {
   font-size: 18px;
   font-weight: bold;
+  font-weight: normal;
   font-style: italic;
   color: #999;
 }
@@ -69,6 +70,52 @@ h3 {
 }
 #canvas {
   position: relative;
+}
+.rooms {
+  font-size: 60px;
+  text-align: center;
+  display: block;
+  margin: 20px 0;
+}
+#formWrapper {
+  width: 410px;
+  margin: 0 auto;
+}
+#formWrapper input[type="text"] {
+  width: 400px;
+  height: 120px;
+  font-size: 50px;
+  border: none;
+}
+#formWrapper input[type="submit"] {
+  width: 400px;
+  height: 120px;
+  font-size: 50px;
+  border: none;
+  margin: 10px 0;
+}
+/*----------------------------
+	Mobile View
+-----------------------------*/
+#mobileContent h1 {
+  font-size: 100px;
+  font-weight: bold;
+  padding-bottom: 8px;
+  text-align: center;
+}
+#mobileContent #player1 {
+  display: block;
+  height: 200px;
+  width: 90%;
+  margin: 0 auto 100px auto;
+  font-size: 80px;
+}
+#mobileContent #player2 {
+  display: block;
+  height: 200px;
+  width: 90%;
+  margin: 0 auto;
+  font-size: 80px;
 }
 ul#geturl li {
   display: inline-block;
@@ -108,27 +155,6 @@ ul#geturl li#link {
   width: 100px;
   float: left;
   position: relative;
-}
-/*----------------------------
-	Mobile View
------------------------------*/
-#mobileContent h1 {
-  font-size: 100px;
-  font-weight: bold;
-  padding-bottom: 8px;
-  text-align: center;
-}
-#mobileContent #player1 {
-  height: 200px;
-  width: 90%;
-  margin: 0 auto 100px auto;
-  font-size: 80px;
-}
-#mobileContent #player2 {
-  height: 200px;
-  width: 90%;
-  margin: 0 auto;
-  font-size: 80px;
 }
 /*----------------------------
 	The Footer
