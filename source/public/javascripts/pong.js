@@ -9,7 +9,7 @@
 		'speed': 2, //controls the speed of the ball
 		'paddle_inc': 30, //how many pixels paddle can move in either direction
 		'pause': false,
-		'gameOver': 1,
+		'gameOver': 5,
 		'playersReady': false
 	};
 	var socket = io.connect(app.config.server.url);
