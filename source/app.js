@@ -47,42 +47,64 @@ server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
-var MobilePlayer = 0;
+	
+var clients = {
+	'player1': 'open',
+	'player2': 'open'
+}
+var MobilePlayer;
 
 io.sockets.on('connection', function(socket){
 	socket.emit('connected', {message: 'Connected to NodePong!', from: "System"});
-	socket.on('mobilePlayer', function(data){
-		console.log('mobileplayer');
-		socket.emit('PlayerCount',{data: data});
-		socket.set('playerType','mobile'); 
-		   	
-	});	
 	
+	
+	socket.on('player1', function(){
+		clients.player1 = 'closed';
+	})
+	socket.on('player2', function(){
+		clients.player2 = 'closed';
+	})
+	
+	countUsers = function(){
+		console.log(clients)
+		socket.broadcast.emit('clients', {clients: clients})
+	}
+	
+	setInterval(countUsers, 1000);
+	
+	
+	socket.on('paddleLocation', function(data, MobilePlayer){
+		socket.broadcast.emit('sendPaddledata', {data:data});
+	});	
 	socket.on('join', function (data, ball) {
 	    RoomModel.findById(data.room, 'title', function(err, room){
 	    	if(!err && data.room){
 		    	socket.join(room._id);
-		    	console.log('joined');
-		    }	 			    
-			var users = io.sockets.clients(room._id).length; // count users in room
-			for (var socketId in io.sockets.sockets) {   
-			    io.sockets.sockets[socketId].get('playerType', function(err, playerType) {
-			       //MobilePlayer = io.sockets.clients(socketId).length; // Count mobile users 
-			    });
-			}
-		    var whichPlayer = data.MobilePlayer;
-			socket.on('paddleLocation', function(data){
-				socket.broadcast.emit('sendPaddledata', { playerPaddle: whichPlayer, data:data});
-			});	
-
+		    	console.log('joined'); 	
+		    }		
 		}); // End RoomModel
 	}); // End  Join
 	
-	
-	io.sockets.on('disconnect', function () { 
-		socket.get('playerType', function (err, playerType) {
-			// disconnect users
-	    });
+	socket.on('leave', function (data, MobilePlayer) { 
+		socket.disconnect();
+		if (data.MobilePlayer == 1){
+			clients.player1 = 'open';
+		}
+		if (data.MobilePlayer == 2){		
+			clients.player2 = 'open';
+		}
+
+	});
+	socket.on('disconnect', function (data, MobilePlayer) { 
+		/*
+socket.disconnect();
+		if (data.MobilePlayer == 1){
+			clients.player1 = 'open';
+		}
+		if (data.MobilePlayer == 2){		
+			clients.player2 = 'open';
+		}
+*/
 	});
 	
 	

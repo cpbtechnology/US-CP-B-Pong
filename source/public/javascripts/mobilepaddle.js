@@ -7,75 +7,68 @@
 		}
 	};
 	var socket = io.connect(window.location);
-
-	socket.emit('mobilePlayer', {players: 'players'});
-	socket.on('PlayerCount', function(data){
-		var MobilePlayer = 0;
-
-	$('#player1').click(function(){
-		MobilePlayer = 1;
-		$('#player').html( 'Player =  ' + MobilePlayer );
-		$('#mobileContent').hide();
-		this.startPaddle();
-		alert('made it');
+	
+	socket.on('clients', function(data){
+		if(data.clients.player1 == 'closed'){
+			$('#player1').html('<p>connected</p>');
+		}
+		if(data.clients.player1 == 'open'){
+			$('#player1').html('<p>Join as Player 1</p>');
+		}
+		if(data.clients.player2 == 'closed'){
+			$('#player2').html('<p>connected</p>');
+		}
+		if(data.clients.player2 == 'open'){
+			$('#player2').html('<p>Join as Player 2</p>');
+		}
 	})
-	$('#player2').click(function(){
-		MobilePlayer = 2;
+	
+	$('#player1').click(function(){
+		socket.emit('player1');
+		MobilePlayer = 1;	
 		$('#player').html( 'Player =  ' + MobilePlayer );
-		$('#mobileContent').hide();
 		startPaddle();
 	})
-	/*
-	
-		//if (data.MobilePlayer == 1){
-			$('#player').html( 'Player =  ' + data.MobilePlayer );
-			$('#mobileContent').hide();
-			$('#player1').addClass('connected');
-			startPaddle();
-				
-		//}
-		if (data.MobilePlayer == 2) {
-			$('#player').html( 'Player =  ' + data.MobilePlayer );
-			$('#mobileContent').hide();
-			$('#player2').addClass('connected');
-			startPaddle();	
-		}
-*/
-	});
+	$('#player2').click(function(){
+		socket.emit('player2');
+		MobilePlayer = 2;
+		$('#player').html( 'Player =  ' + MobilePlayer );
+		startPaddle();
+	})
+
+
 	
 	var beta;
-	var paddlePos = 400;
+	var paddlePos = 165;
 	var self = this;
+	var idleSeconds = 30;
 	startPaddle = function(){ 
-		// Uses the phone acceleramater 
-		/*
-		window.ondevicemotion = function(event) {
-			beta = Math.round(event.accelerationIncludingGravity.y*100)/100;
-			
-			if (beta > .6){
-				paddlePos = paddlePos+(beta*beta);
-			}
-			if (beta < -.3){
-				paddlePos = paddlePos-(-beta*(-beta));
-			}
-			if (paddlePos <= 0){
-				paddlePos = 0;
-			}
-			if (paddlePos >= 355){
-				paddlePos = 355;
-			}
-			socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer: MobilePlayer});
-		}
-		*/
-
-		window.addEventListener('touchmove', function(event){
+		$('#mobileContent').hide();
+		socket.emit('paddleLocation', {paddlePos: paddlePos});
+		
+		window.addEventListener('touchmove', function(event){					
+			resetTimer();
 			event.preventDefault();
     		var touch = event.touches[0];
-    		var paddlePos = (touch.pageY / $(window).height() * 355);
+    		paddlePos = (touch.pageY / $(window).height() * 355);
     		$('#paddlePosition').html(paddlePos);
-    		//$('#paddlePosition').html(touch.pageX + " - " + touch.pageY + " Height - " + $(window).height());
-    		socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer: MobilePlayer});
+    		socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer:MobilePlayer});
+	
 		}, false);
+	
+		var idleTimer;
+		function resetTimer(){
+			clearTimeout(idleTimer)
+			idleTimer = setTimeout(whenUserIdle, idleSeconds*1000);
+		};
+		function whenUserIdle(){ // Remove user from game if not active	
+			socket.emit('leave', {MobilePlayer:MobilePlayer})
+			location.reload();
+		};
+
+
+
+
 	}
 
 	

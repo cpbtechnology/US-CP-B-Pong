@@ -1,17 +1,8 @@
-h1 Current Rooms
+h1 Welcome to NodePong
 ul
 	each room in rooms
 		li.rooms
 			a(href="#!#{room._id}") #{room.title}
-
-<br>
-<br>
-<br>
-<br>
-form
-	#formWrapper
-		input(id="title", name="title", placeholder = "Your Room Title", type="text")
-		input(type="submit", value="Create Room")
 
 footer
 	h2 Node Pong

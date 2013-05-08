@@ -3,10 +3,10 @@
 --------------------------*/
 
 
-*{
+*
 	margin:0
 	padding:0
-}
+
 
 
 /*-------------------------
@@ -14,165 +14,183 @@
 --------------------------*/
 
 
-html{		
+html		
 	/* This will hide the extra canvas if the screen is small */
 	overflow:hidden
-}
 
-body{
+
+body
 	font:14px/1.3 'Segoe UI',Arial, sans-serif
 	color:#fff
 	background: #3193a5
-}
 
-a, a:visited {
+
+a, a:visited 
 	outline:none
 	color:#fff
-}
 
-a:hover{
+
+a:hover
 	text-decoration:none
-}
 
-section, footer, header{
+
+section, footer, header
 	display block
-}
+
 
 
 /*-------------------------
 	Main Area
 --------------------------*/
 
-#instructions{
-	position fixed
-	background-color rgba(255, 255, 255, 0.7)
-	width 400px
-	top 50%
-	left 50%
-	margin -120px 0 0 -400px
-    padding 25px
-    position fixed
-    text-align center
-    top: 50%
-    width: 800px
-}
 
-h1{
+h1
 	font-size 84px
 	font-weight bold
 	padding-bottom 8px
 	text-align center
-}
 
-h2{
+
+h2
 	font-size 22px
 	font-weight bold
 	padding-bottom 8px
-}
 
 
-h3{
+
+h3
 	font-size 18px
 	font-weight bold
 	font-weight normal
 	font-style italic
 	color #999
-}
 
-#container{
-	width 960px
-	margin 0 auto
-}
-
-#canvas{
+#canvas
 	position relative
-}
+	width 900px
+	margin 0 auto
 
-.rooms{
+
+.rooms
 	font-size 60px
 	text-align center
 	display block
 	margin 20px 0
-}
 
-#formWrapper{
+
+#formWrapper
 	width 410px
 	margin 0 auto
-}
 
-#formWrapper input[type="text"]{
+
+#formWrapper input[type="text"]
 	width: 400px;
 	height: 120px;
 	font-size: 50px;
 	border: none;
-}
 
-#formWrapper input[type="submit"]{
+
+#formWrapper input[type="submit"]
 	width 400px;
 	height 120px;
 	font-size 50px;
 	border none;
 	margin 10px 0 
-}
+
+#instructions
+	position absolute
+	top 0
+	padding 20px;
+	margin 50px 80px
+	width 700px
+	text-align: center
+	background-color rgba(255, 255, 255, 0.7)
+	color #000
+
+#geturl 
+	overflow hidden
+	
+#geturl li
+	display inline-block
+	float left
+	text-align center
+	width 10%
+	height 230px;
+	line-height 100px;
 
 
+#geturl #qr
+	background url('../images/1367511948-5889.svg') no-repeat
+	display block
+	background-size 70%
+	background-position 40px 0
+	width 45%
+
+	
+#geturl li#link 
+	width 45%
+	font-size 35px
+	font-weight bold
+
+
+#score 
+	position absolute
+	bottom 0
+	left 0
+	width 900px
+	font-size 65px
+	
+#score span
+	width 430px
+	display block
+	float left
+
+#p1_scr 
+	text-align right
+	margin-right 30px
+
+#p2_scr 
+	text-align left
+	
+.currentPlayers
+	display block
+	width 50%
+	float left
+	margin 35px 0
+	text-align center
+	position relative
+
+
+.dg
+	display none
 
 /*----------------------------
 	Mobile View
 -----------------------------*/
-#mobileContent h1{
+#mobileContent h1
 	font-size 100px
 	font-weight bold
 	padding-bottom 8px
 	text-align center
-}
 
-
-
-#mobileContent #player1{
+#mobileContent #player1
 	display block
 	height 200px
 	width 90%
 	margin 0 auto 100px auto
 	font-size 80px
-}
 
-#mobileContent #player2{
+
+#mobileContent #player2
 	display block
 	height 200px
 	width 90%
 	margin 0 auto
 	font-size 80px
-}
 
-ul#geturl li{
-	display inline-block
-	float left
-	text-align center
-	width 20px
-	height 150px;
-	line-height 100px;
-}
 
-ul#geturl #qr{
-	background url('../images/1367511948-5889.svg') no-repeat
-	display block
-	background-size 70%
-	width 200px
-}
-	
-ul#geturl li#link {
-	width 180px
-}
 
-#score{ 
-	position absolute
-	bottom 30px
-	width 50px
-	left 425px 
-}
-
-.connected:after{
+.connected:after
 	background url('../images/checkmark.png') no-repeat
 	height 30px
 	width 35px
@@ -181,20 +199,15 @@ ul#geturl li#link {
 	position absolute
 	right -17px
 	top -8px
-}
 
-.currentPlayers{
-	display block
-	width 100px;
-	float left;
-	position relative
-}
+
+
 
 /*----------------------------
 	The Footer
 -----------------------------*/
 
-footer{
+footer
 	background-color #111111
 	bottom 0
 	box-shadow 0 -1px 2px rgba(0,0,0,0.4)
@@ -203,9 +216,9 @@ footer{
 	position fixed
 	width 100%
 	z-index 100000
-}
 
-footer h2{
+
+footer h2
 	color #EEEEEE
 	font-size 14px
 	font-weight normal
@@ -214,14 +227,14 @@ footer h2{
 	padding 13px 0 0
 	position absolute
 	width 540px
-}
 
-footer h2 i{
+
+footer h2 i
 	font-style:normal
 	color:#888
-}
 
-footer a.tzine,a.tzine:visited{
+
+footer a.tzine,a.tzine:visited
 	color #999999
 	font-size 12px
 	left 50%
@@ -229,14 +242,14 @@ footer a.tzine,a.tzine:visited{
 	position absolute
 	text-decoration none
 	top 0
-}
 
-footer a i{
+
+footer a i
 	color:#ccc
 	font-style normal
-}
 
-footer a i b{
+
+footer a i b
 	color:#c92020
 	font-weight normal
-}
+
