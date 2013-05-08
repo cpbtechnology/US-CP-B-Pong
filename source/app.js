@@ -52,6 +52,8 @@ var clients = {
 	'player1': 'open',
 	'player2': 'open'
 }
+var MobilePlayer;
+
 io.sockets.on('connection', function(socket){
 	socket.emit('connected', {message: 'Connected to NodePong!', from: "System"});
 	
@@ -83,8 +85,26 @@ io.sockets.on('connection', function(socket){
 		}); // End RoomModel
 	}); // End  Join
 	
-	socket.on('disconnect', function () { 
-		console.log('disconnected----------');
+	socket.on('leave', function (data, MobilePlayer) { 
+		socket.disconnect();
+		if (data.MobilePlayer == 1){
+			clients.player1 = 'open';
+		}
+		if (data.MobilePlayer == 2){		
+			clients.player2 = 'open';
+		}
+
+	});
+	socket.on('disconnect', function (data, MobilePlayer) { 
+		/*
+socket.disconnect();
+		if (data.MobilePlayer == 1){
+			clients.player1 = 'open';
+		}
+		if (data.MobilePlayer == 2){		
+			clients.player2 = 'open';
+		}
+*/
 	});
 	
 	

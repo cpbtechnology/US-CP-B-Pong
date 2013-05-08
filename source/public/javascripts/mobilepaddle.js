@@ -13,13 +13,13 @@
 			$('#player1').html('<p>connected</p>');
 		}
 		if(data.clients.player1 == 'open'){
-			$('#player1').html('<p>Join</p>');
+			$('#player1').html('<p>Join as Player 1</p>');
 		}
 		if(data.clients.player2 == 'closed'){
 			$('#player2').html('<p>connected</p>');
 		}
 		if(data.clients.player2 == 'open'){
-			$('#player2').html('<p>Join</p>');
+			$('#player2').html('<p>Join as Player 2</p>');
 		}
 	})
 	
@@ -41,31 +41,31 @@
 	var beta;
 	var paddlePos = 165;
 	var self = this;
-	var idleSeconds = 45;
+	var idleSeconds = 30;
 	startPaddle = function(){ 
 		$('#mobileContent').hide();
 		socket.emit('paddleLocation', {paddlePos: paddlePos});
 		
 		window.addEventListener('touchmove', function(event){					
-			//resetTimer();
+			resetTimer();
 			event.preventDefault();
     		var touch = event.touches[0];
     		paddlePos = (touch.pageY / $(window).height() * 355);
     		$('#paddlePosition').html(paddlePos);
-    		//$('#paddlePosition').html(touch.pageX + " - " + touch.pageY + " Height - " + $(window).height());
     		socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer:MobilePlayer});
 	
 		}, false);
-	/*
-	var idleTimer;
+	
+		var idleTimer;
 		function resetTimer(){
 			clearTimeout(idleTimer)
 			idleTimer = setTimeout(whenUserIdle, idleSeconds*1000);
 		};
-		function whenUserIdle(){ // Remove user from game if not active
-			socket.emit('leave')
+		function whenUserIdle(){ // Remove user from game if not active	
+			socket.emit('leave', {MobilePlayer:MobilePlayer})
+			location.reload();
 		};
-*/
+
 
 
 

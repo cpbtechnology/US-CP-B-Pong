@@ -33,20 +33,6 @@ header {
 /*-------------------------
 	Main Area
 --------------------------*/
-#instructions {
-  position: fixed;
-  background-color: rgba(255,255,255,0.7);
-  width: 400px;
-  top: 50%;
-  left: 50%;
-  margin: -120px 0 0 -400px;
-  padding: 25px;
-  position: fixed;
-  text-align: center;
-  top: 50%;
-  width: 800px;
-  color: #000;
-}
 h1 {
   font-size: 84px;
   font-weight: bold;
@@ -65,12 +51,10 @@ h3 {
   font-style: italic;
   color: #999;
 }
-#container {
-  width: 960px;
-  margin: 0 auto;
-}
 #canvas {
   position: relative;
+  width: 900px;
+  margin: 0 auto;
 }
 .rooms {
   font-size: 60px;
@@ -95,6 +79,69 @@ h3 {
   border: none;
   margin: 10px 0;
 }
+#instructions {
+  position: absolute;
+  top: 0;
+  padding: 20px;
+  margin: 50px 80px;
+  width: 700px;
+  text-align: center;
+  background-color: rgba(255,255,255,0.7);
+  color: #000;
+}
+#geturl {
+  overflow: hidden;
+}
+#geturl li {
+  display: inline-block;
+  float: left;
+  text-align: center;
+  width: 10%;
+  height: 230px;
+  line-height: 100px;
+}
+#geturl #qr {
+  background: url("../images/1367511948-5889.svg") no-repeat;
+  display: block;
+  background-size: 70%;
+  background-position: 40px 0;
+  width: 45%;
+}
+#geturl li#link {
+  width: 45%;
+  font-size: 35px;
+  font-weight: bold;
+}
+#score {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 900px;
+  font-size: 65px;
+}
+#score span {
+  width: 430px;
+  display: block;
+  float: left;
+}
+#p1_scr {
+  text-align: right;
+  margin-right: 30px;
+}
+#p2_scr {
+  text-align: left;
+}
+.currentPlayers {
+  display: block;
+  width: 50%;
+  float: left;
+  margin: 35px 0;
+  text-align: center;
+  position: relative;
+}
+.dg {
+  display: none;
+}
 /*----------------------------
 	Mobile View
 -----------------------------*/
@@ -118,29 +165,6 @@ h3 {
   margin: 0 auto;
   font-size: 80px;
 }
-ul#geturl li {
-  display: inline-block;
-  float: left;
-  text-align: center;
-  width: 20px;
-  height: 150px;
-  line-height: 100px;
-}
-ul#geturl #qr {
-  background: url("../images/1367511948-5889.svg") no-repeat;
-  display: block;
-  background-size: 70%;
-  width: 200px;
-}
-ul#geturl li#link {
-  width: 180px;
-}
-#score {
-  position: absolute;
-  bottom: 30px;
-  width: 50px;
-  left: 425px;
-}
 .connected:after {
   background: url("../images/checkmark.png") no-repeat;
   height: 30px;
@@ -150,12 +174,6 @@ ul#geturl li#link {
   position: absolute;
   right: -17px;
   top: -8px;
-}
-.currentPlayers {
-  display: block;
-  width: 100px;
-  float: left;
-  position: relative;
 }
 /*----------------------------
 	The Footer

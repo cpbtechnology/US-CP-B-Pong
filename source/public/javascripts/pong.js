@@ -9,7 +9,7 @@
 		'speed': 2, //controls the speed of the ball
 		'paddle_inc': 30, //how many pixels paddle can move in either direction
 		'pause': false,
-		'gameOver': 3
+		'gameOver': 5
 	};
 	var socket = io.connect(app.config.server.url);
 	//setup dat-gui for visually modifying app settings
@@ -176,7 +176,7 @@ var paddle2Pos, paddle1Pos;
 		
 	};
 	
-	var testCollisions = function(data, paddle1Pos, paddle2Pos) {
+	var testCollisions = function() {
 
 		//make sure paddles don't go beyond play area
 			if(((paddle1Pos <= 0) && (player_1_direction == up)) || ((paddle1Pos >= (pa['height'] - paddle_1['height'])) && (player_1_direction == down))) player_1_direction = null;
@@ -226,15 +226,14 @@ var paddle2Pos, paddle1Pos;
 	var setScore = function(p) {
 			if(p == player_1) {
 				player_1_scr++;
-				$('#p1_scr').html("Player 1 = "+player_1_scr);
+				$('#p1_scr').html(player_1_scr);
 			}
 			if(p == player_2) {
 				player_2_scr++;
-				$('#p2_scr').html("Player 2 = "+player_2_scr);
+				$('#p2_scr').html(player_2_scr);
 			}
 			if(player_2_scr === app.config.gameOver || player_1_scr == app.config.gameOver){
 				console.log('game over');
-				socket.emit('leave');
 			}
 		}
 
@@ -296,12 +295,10 @@ var paddle2Pos, paddle1Pos;
 		}
 		
 	});
-	setInterval(sendPaddleData, 100);
+	setInterval(sendPaddleData, 10);
 	function sendPaddleData(){
 		this.renderPlayarea(paddle2Pos, paddle1Pos);
 		this.testCollisions(paddle2Pos, paddle1Pos);
-		console.log(paddle2Pos);
-
 	};
 
 	socket.on('clients', function(data){ // Logic to say which players are connected on game
@@ -313,16 +310,20 @@ var paddle2Pos, paddle1Pos;
 		}
 		if(data.clients.player1 == 'open'){
 			$('#player1').removeClass('connected');
+			paddle1Pos = -1000;
 		}
 		if(data.clients.player2 == 'open'){
 			$('#player2').removeClass('connected');
+			paddle2Pos = -1000;
 		}
 		if(data.clients.player1 == 'open' || data.clients.player2 == 'open' ){
 			$('#instructions').show();
 		}
 		if(data.clients.player1 == 'closed' && data.clients.player2 == 'closed' ){
 			$('#instructions').hide();
+			
 		}
+		
 	})
 		
 	init();
