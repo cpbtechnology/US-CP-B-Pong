@@ -9,7 +9,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<script src="http://debug.phonegap.com/target/target-script-min.js#accelerometer"></script><script src="/javascripts/mobilepaddle.js"></script><body><div id="mobileContent"><h2>Welcome to Node Pong. Choose player;</h2><button id="player1">Join as Player 1</button><button id="player2">Join as Player 2</button></div><div id="player"></div><div id="power"></div></body>');
+buf.push('<script src="http://debug.phonegap.com/target/target-script-min.js#accelerometer"></script><script src="/javascripts/mobilepaddle.js"></script><body><div id="mobileContent"><h2>Welcome to Node Pong. Choose player;</h2><p>Use your thumb to control the paddles</p><button id="player1">Join as Player 1</button><button id="player2">Join as Player 2</button></div><div id="player"></div><div id="power"></div></body>');
 }
 return buf.join("");
 }
@@ -29,7 +29,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<h1>Current Rooms</h1><ul>');
+buf.push('<h1>Welcome to NodePong</h1><ul>');
 // iterate rooms
 ;(function(){
   if ('number' == typeof rooms.length) {
@@ -55,7 +55,7 @@ buf.push('>' + escape((interp = room.title) == null ? '' : interp) + '</a></li>'
   }
 }).call(this);
 
-buf.push('</ul><br>\n<br>\n<br>\n<br><form><div id="formWrapper"><input id="title" name="title" placeholder="Your Room Title" type="text"/><input type="submit" value="Create Room"/></div></form><footer><h2>Node Pong</h2></footer>');
+buf.push('</ul><footer><h2>Node Pong</h2></footer>');
 }
 return buf.join("");
 }

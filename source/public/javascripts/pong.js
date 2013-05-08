@@ -1,6 +1,6 @@
 	//make a namespace
 	var app = app || {};
-
+	console.log('app read');
 	//centralize app settings
 	app.config = {
 		'server': {
@@ -8,7 +8,8 @@
 		},
 		'speed': 2, //controls the speed of the ball
 		'paddle_inc': 30, //how many pixels paddle can move in either direction
-		'pause': false
+		'pause': false,
+		'gameOver': 3
 	};
 	var socket = io.connect(app.config.server.url);
 	//setup dat-gui for visually modifying app settings
@@ -16,7 +17,7 @@
 	app.gui.vars = {};
 	app.gui.vars.paddle_inc = app.gui.add(app.config, 'paddle_inc');
 	app.gui.vars.speed = app.gui.add(app.config, 'speed', {
-		'Slow': 4,
+		'Slow': 2,
 		'Normal': 4,
 		'Fast': 16
 	});
@@ -105,7 +106,7 @@
 		pa['height'] = 400;
 		pa['player_margin'] = 15; //area behind player paddles
 		pa['foreground'] = "#ffffff";
-		pa['background'] = "#EC008C";
+		pa['background'] = "#3193a5";
 		img = new Image();
 		img.src = '../images/pong-bg.jpg';
 		playarea.drawImage(img,0,0);
@@ -231,6 +232,10 @@
 				player_2_scr++;
 				$('#p2_scr').html("Player 2 = "+player_2_scr);
 			}
+			if(player_2_scr === app.config.gameOver || player_1_scr == app.config.gameOver){
+				console.log('game over');
+				socket.emit('leave');
+			}
 		}
 
 	//handle input
@@ -285,17 +290,33 @@
 		self.broadcastElements(data);
 	});
 	socket.on('sendPaddledata', function(data){
-		if (data.data.MobilePlayer == 1){
+		console.log(data.MobilePlayer);
+		if (data.MobilePlayer == 1){
 			paddle1Pos = data.data.paddlePos;
-
 		}
-		if (data.data.MobilePlayer == 2){
+		if (data.MobilePlayer  == 2){
 			paddle2Pos = data.data.paddlePos;
 		}
-		self.renderPlayarea(data, paddle2Pos, paddle1Pos);
-		self.testCollisions(data, paddle2Pos, paddle1Pos);
-		$('#instructions').hide();
 		
+	});
+	setInterval(sendPaddleData, 10);
+	function sendPaddleData(){
+		self.renderPlayarea(paddle2Pos, paddle1Pos);
+		self.testCollisions(paddle2Pos, paddle1Pos);
+	};
+
+	
+	socket.on('clients', function(data){
+		console.log(data);
+		if (data.MobilePlayer < 2){
+			$('#instructions').show();
+		}
+		if (data.MobilePlayer == 1){
+			$('#player1').addClass('connected');
+		}
+		if (data.MobilePlayer == 2){
+			$('#player2').addClass('connected');
+		}
 	});
 		
 	init();

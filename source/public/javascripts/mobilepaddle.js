@@ -7,17 +7,24 @@
 		}
 	};
 	var socket = io.connect(window.location);
-
-	socket.emit('mobilePlayer', {players: 'players'});
-	socket.on('PlayerCount', function(data){
-		var MobilePlayer = 0;
-
+	
+	socket.on('getPlayers', function(data){
+		if(data.MobilePlayer ==1){
+			$('#player1').html('<p>connected</p>');
+			$('#player2').show();
+		}
+		if(data.MobilePlayer ==2){
+			$('#player1').html('<p>connected</p>');
+			$('#player2').html('<p>connected</p>');
+		}
+		
+	})
+	
 	$('#player1').click(function(){
 		MobilePlayer = 1;
 		$('#player').html( 'Player =  ' + MobilePlayer );
 		$('#mobileContent').hide();
-		this.startPaddle();
-		alert('made it');
+		startPaddle();
 	})
 	$('#player2').click(function(){
 		MobilePlayer = 2;
@@ -25,31 +32,18 @@
 		$('#mobileContent').hide();
 		startPaddle();
 	})
-	/*
-	
-		//if (data.MobilePlayer == 1){
-			$('#player').html( 'Player =  ' + data.MobilePlayer );
-			$('#mobileContent').hide();
-			$('#player1').addClass('connected');
-			startPaddle();
-				
-		//}
-		if (data.MobilePlayer == 2) {
-			$('#player').html( 'Player =  ' + data.MobilePlayer );
-			$('#mobileContent').hide();
-			$('#player2').addClass('connected');
-			startPaddle();	
-		}
-*/
-	});
+
+
 	
 	var beta;
 	var paddlePos = 400;
 	var self = this;
+	var idleSeconds = 45;
 	startPaddle = function(){ 
-		// Uses the phone acceleramater 
-		/*
+		//socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer:MobilePlayer});
+		
 		window.ondevicemotion = function(event) {
+			//resetTimer();
 			beta = Math.round(event.accelerationIncludingGravity.y*100)/100;
 			
 			if (beta > .6){
@@ -64,18 +58,29 @@
 			if (paddlePos >= 355){
 				paddlePos = 355;
 			}
-			socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer: MobilePlayer});
+			socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer:MobilePlayer});
 		}
-		*/
-
-		window.addEventListener('touchmove', function(event){
+		
+		window.addEventListener('touchmove', function(event){					
+			resetTimer();
 			event.preventDefault();
     		var touch = event.touches[0];
-    		var paddlePos = (touch.pageY / $(window).height() * 355);
+    		paddlePos = (touch.pageY / $(window).height() * 355);
     		$('#paddlePosition').html(paddlePos);
     		//$('#paddlePosition').html(touch.pageX + " - " + touch.pageY + " Height - " + $(window).height());
-    		socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer: MobilePlayer});
+    		socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer:MobilePlayer});
+	
 		}, false);
+		var idleTimer;
+		function resetTimer(){
+			clearTimeout(idleTimer)
+			idleTimer = setTimeout(whenUserIdle, idleSeconds*1000);
+		};
+		function whenUserIdle(){ // Remove user from game if not active
+			socket.emit('leave')
+		};
+
+
 	}
 
 	
