@@ -9,7 +9,8 @@
 		'speed': 2, //controls the speed of the ball
 		'paddle_inc': 30, //how many pixels paddle can move in either direction
 		'pause': false,
-		'gameOver': 5
+		'gameOver': 1,
+		'playersReady': false
 	};
 	var socket = io.connect(app.config.server.url);
 	//setup dat-gui for visually modifying app settings
@@ -109,6 +110,7 @@
 		pa['background'] = "#3193a5";
 		img = new Image();
 		img.src = '../images/pong-bg.jpg';
+		
 		playarea.drawImage(img,0,0);
 		
 		divider['pos'] = pa['width'] / 2;
@@ -184,12 +186,16 @@ var paddle2Pos, paddle1Pos;
 
 			//check to see if ball went beyond paddles, and if so, score accordingly and reset playarea
 			if(ball['x'] <= 0) {
-				setScore(player_2);
+				if (app.config.playersReady == true){
+					setScore(player_2);
+				}
 				init()
 				sleep(1000);
 			}
 			if(ball['x'] >= (pa['width'] - ball['width'])) {
-				setScore(player_1);
+				if (app.config.playersReady == true){
+					setScore(player_1);
+				}
 				init();
 				sleep(1000);
 			}
@@ -234,10 +240,17 @@ var paddle2Pos, paddle1Pos;
 			}
 			if(player_2_scr === app.config.gameOver || player_1_scr == app.config.gameOver){
 				console.log('game over');
+				socket.emit('newGame');
+				console.log(currentPlayer);
 				playerWins();
 			}
 		}
 	var playerWins = function(){
+		player_1_scr = 0
+		$('#p1_scr').html(player_1_scr);
+		player_2_scr = 0
+		$('#p2_scr').html(player_2_scr);
+	
 		if (player_1_scr == app.config.gameOver){
 			$('#congrats').html('Player1 Wins!');
 		}
@@ -252,9 +265,6 @@ var paddle2Pos, paddle1Pos;
 		  }, 5000, function() {
 		    // Animation complete.
 		  });
-	
-		
-		
 		
 	}
 	//handle input
@@ -307,6 +317,7 @@ var paddle2Pos, paddle1Pos;
     var self = this;
 
 	socket.on('sendPaddledata', function(data){
+		currentPlayer = data.data.MobilePlayer;
 		if (data.data.MobilePlayer == 1){
 			paddle1Pos = data.data.paddlePos;
 		}
@@ -341,12 +352,17 @@ var paddle2Pos, paddle1Pos;
 		}
 		if(data.clients.player1 == 'closed' && data.clients.player2 == 'closed' ){
 			$('#instructions').hide();
+			app.config.playersReady = true;
+			
 			
 		}
 		
 	})
-		
-	init();
+	
+	
+		init();
+	
+	
 	
 	
 	

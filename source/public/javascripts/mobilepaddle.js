@@ -66,7 +66,9 @@
 			location.reload();
 		};
 
-
+		socket.on('newGameMobile', function(){
+			location.reload();
+		})
 
 
 	}

@@ -43,10 +43,10 @@ var server = http.createServer(app)
 var io = require('socket.io').listen(server);
 var RoomModel = require('./models/roommodel');
 
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
-});
+ io.configure(function () { 
+	  io.set("transports", ["xhr-polling"]); 
+	  io.set("polling duration", 10); 
+	});
 
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
@@ -98,8 +98,15 @@ io.sockets.on('connection', function(socket){
 		if (data.MobilePlayer == 2){		
 			clients.player2 = 'open';
 		}
-
 	});
+	socket.on('newGame', function(){
+		socket.broadcast.emit('newGameMobile');
+		socket.disconnect();
+		clients.player1 = 'open';
+		clients.player2 = 'open';	
+	})
+	
+	
 	socket.on('disconnect', function (data, MobilePlayer) { 
 		/*
 socket.disconnect();
