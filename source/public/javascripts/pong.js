@@ -4,7 +4,7 @@
 	//centralize app settings
 	app.config = {
 		'server': {
-			'url': 'http://localhost:3000'
+			'url': window.location.origin
 		},
 		'speed': 2, //controls the speed of the ball
 		'paddle_inc': 30, //how many pixels paddle can move in either direction
@@ -234,9 +234,29 @@ var paddle2Pos, paddle1Pos;
 			}
 			if(player_2_scr === app.config.gameOver || player_1_scr == app.config.gameOver){
 				console.log('game over');
+				playerWins();
 			}
 		}
-
+	var playerWins = function(){
+		if (player_1_scr == app.config.gameOver){
+			$('#congrats').html('Player1 Wins!');
+		}
+		if (player_2_scr == app.config.gameOver){
+			$('#congrats').html('Player2 Wins!');
+		}
+		
+		$('#winner').animate({
+		    opacity: 0.25,
+		    left: '+=50',
+		    height: 'toggle'
+		  }, 5000, function() {
+		    // Animation complete.
+		  });
+	
+		
+		
+		
+	}
 	//handle input
 	document.onkeydown = function(ev) {
 		switch(ev.keyCode) {
