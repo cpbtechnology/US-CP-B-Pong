@@ -133,8 +133,8 @@
 		speed = app.config.speed;
 		
 	}
-	var paddle2Pos, paddle1Pos;
-	var renderPlayarea = function (data, paddle1Pos, paddle2Pos) {	
+var paddle2Pos, paddle1Pos;
+	var renderPlayarea = function () {	
 		
 		playarea.beginPath();
 		playarea.clearRect(0, 0, pa.width, pa.height);
@@ -153,10 +153,10 @@
 			else paddle_2['y'] = paddle_2['y'] + paddle_inc;
 		}
 
-		playarea.rect(paddle_1.x, paddle1Pos, paddle_1.width, paddle_1.height);		
+		playarea.rect(paddle_1.x, paddle1Pos, paddle_1.width, paddle_1.height);	
 		playarea.rect(paddle_2.x, paddle2Pos, paddle_2.width, paddle_2.height);
-
-	
+		
+		
 		//move ball
 		playarea.rect(ball['x'], ball['y'], ball['width'], ball['height']);
 		ball['x'] = ball['x'] + Math.cos((ball_direction) * Math.PI / 180) * speed;
@@ -286,38 +286,44 @@
     }
 
     var self = this;
-	socket.on('sendBalldata', function(data){
-		self.broadcastElements(data);
-	});
+
 	socket.on('sendPaddledata', function(data){
-		console.log(data.MobilePlayer);
-		if (data.MobilePlayer == 1){
+		if (data.data.MobilePlayer == 1){
 			paddle1Pos = data.data.paddlePos;
 		}
-		if (data.MobilePlayer  == 2){
+		if (data.data.MobilePlayer == 2){		
 			paddle2Pos = data.data.paddlePos;
 		}
 		
 	});
-	setInterval(sendPaddleData, 10);
+	setInterval(sendPaddleData, 100);
 	function sendPaddleData(){
-		self.renderPlayarea(paddle2Pos, paddle1Pos);
-		self.testCollisions(paddle2Pos, paddle1Pos);
+		this.renderPlayarea(paddle2Pos, paddle1Pos);
+		this.testCollisions(paddle2Pos, paddle1Pos);
+		console.log(paddle2Pos);
+
 	};
 
-	
-	socket.on('clients', function(data){
-		console.log(data);
-		if (data.MobilePlayer < 2){
-			$('#instructions').show();
-		}
-		if (data.MobilePlayer == 1){
+	socket.on('clients', function(data){ // Logic to say which players are connected on game
+		if(data.clients.player1 == 'closed'){ 
 			$('#player1').addClass('connected');
 		}
-		if (data.MobilePlayer == 2){
+		if(data.clients.player2 == 'closed'){
 			$('#player2').addClass('connected');
 		}
-	});
+		if(data.clients.player1 == 'open'){
+			$('#player1').removeClass('connected');
+		}
+		if(data.clients.player2 == 'open'){
+			$('#player2').removeClass('connected');
+		}
+		if(data.clients.player1 == 'open' || data.clients.player2 == 'open' ){
+			$('#instructions').show();
+		}
+		if(data.clients.player1 == 'closed' && data.clients.player2 == 'closed' ){
+			$('#instructions').hide();
+		}
+	})
 		
 	init();
 	

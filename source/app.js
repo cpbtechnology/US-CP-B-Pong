@@ -47,38 +47,39 @@ server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
-var MobilePlayer = 0;
-var clients = 0;
+	
+var clients = {
+	'player1': 'open',
+	'player2': 'open'
+}
 io.sockets.on('connection', function(socket){
 	socket.emit('connected', {message: 'Connected to NodePong!', from: "System"});
-				 // count users in RoomModel	
-		
-/*
+	
+	
+	socket.on('player1', function(){
+		clients.player1 = 'closed';
+	})
+	socket.on('player2', function(){
+		clients.player2 = 'closed';
+	})
+	
 	countUsers = function(){
-		clients = io.sockets.clients('5179546cf0eefca6f8000001').length;
-		console.log(clients);
+		console.log(clients)
+		socket.broadcast.emit('clients', {clients: clients})
 	}
+	
 	setInterval(countUsers, 1000);
-*/
-
+	
+	
 	socket.on('paddleLocation', function(data, MobilePlayer){
-				console.log('===paddlelocation===');
-				console.log(data.MobilePlayer);
-				socket.broadcast.emit('getPlayers', {data:data})
-				socket.broadcast.emit('sendPaddledata', {data:data});
-			});	
+		socket.broadcast.emit('sendPaddledata', {data:data});
+	});	
 	socket.on('join', function (data, ball) {
 	    RoomModel.findById(data.room, 'title', function(err, room){
 	    	if(!err && data.room){
 		    	socket.join(room._id);
 		    	console.log('joined'); 	
-		    }
-
-		    clients = io.sockets.clients('5179546cf0eefca6f8000001').length;
-		 	console.log('Player Joined Game ' + clients);
- 			socket.broadcast.emit('clients', {});	    
-			
-			
+		    }		
 		}); // End RoomModel
 	}); // End  Join
 	
