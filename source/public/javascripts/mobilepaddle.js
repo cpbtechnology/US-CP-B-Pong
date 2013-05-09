@@ -11,14 +11,12 @@
 	socket.on('clients', function(data){
 		if(data.clients.player1 == 'closed'){
 			$('#player1').html('<p>connected</p>');
-			//$('#player1').hide();
 		}
 		if(data.clients.player1 == 'open'){
 			$('#player1').html('<p>Join as Player 1</p>');
 		}
 		if(data.clients.player2 == 'closed'){
 			$('#player2').html('<p>connected</p>');
-			//$('#player2').hide();
 		}
 		if(data.clients.player2 == 'open'){
 			$('#player2').html('<p>Join as Player 2</p>');
