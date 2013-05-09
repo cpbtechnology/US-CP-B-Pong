@@ -85,7 +85,7 @@
 	player_2_scr = 0;
 	player_1_direction = null;
 	player_2_direction = null;
-
+	
 	pa = new Array();
 	divider = new Array();
 	paddle_1 = new Array();
@@ -130,8 +130,15 @@
 		ball['height'] = 20;
 		ball['x'] = (pa['width'] / 2) - (ball['width'] / 2);
 		ball['y'] = (pa['height'] / 2) - (ball['height'] / 2);
-
-		ball_direction = Math.random() * 360; //initialize ball direction, which is determined by angle, at random
+		
+		function ballDirection(){
+			ball_direction = Math.random() * 360;
+			if ( ball_direction > 110 && ball_direction < 70 || ball_direction > 250 && ball_direction < 290 ){
+				ballDirection() //run again
+			}	
+		}
+		
+		ballDirection()
 		speed = app.config.speed;
 		
 	}
