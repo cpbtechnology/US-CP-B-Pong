@@ -476,39 +476,6 @@ h3 {
   display: none;
 }
 /*----------------------------
-	Mobile View
------------------------------*/
-#mobileContent h1 {
-  font-size: 100px;
-  font-weight: bold;
-  padding-bottom: 8px;
-  text-align: center;
-}
-#mobileContent #player1 {
-  display: block;
-  height: 200px;
-  width: 90%;
-  margin: 0 auto 100px auto;
-  font-size: 80px;
-}
-#mobileContent #player2 {
-  display: block;
-  height: 200px;
-  width: 90%;
-  margin: 0 auto;
-  font-size: 80px;
-}
-.connected:after {
-  background: url("../images/checkmark.png") no-repeat;
-  height: 30px;
-  width: 35px;
-  display: block;
-  content: " ";
-  position: absolute;
-  right: -17px;
-  top: -8px;
-}
-/*----------------------------
 	The Footer
 -----------------------------*/
 footer {
@@ -569,11 +536,11 @@ footer a i b {
   }
   button {
     display: block;
-    height: 200px;
-    width: 90%;
-    margin: 0 auto 100px auto;
-    font-size: 80px;
-    font-weight: bold;
+    margin: 10px auto;
+  }
+  .buttons {
+    width: 210px;
+    margin: 0 auto;
   }
   .super-button {
     -webkit-box-shadow: rgba(0,0,0,0.496) 0px 1px 3px 0px;
@@ -595,7 +562,6 @@ footer a i b {
     border-top-width: 0px;
     color: #fff;
     display: inline-block;
-    margin: 10px 0;
     outline-color: #fff;
     outline-style: none;
     outline-width: 0px;
