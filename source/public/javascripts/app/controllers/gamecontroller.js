@@ -21,14 +21,9 @@
 	      },
 		"route": function(data, room){
 			var self=this;
-		    	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) || aryQueryString.mobile == "true") {
-					self.element.html(Templates["pages/partial.mobileroom.jade"]);
-				}	
-				else {		
-					self.element.html(Templates["pages/partial.room.jade"]);
-					//self.element.html(Templates["pages/partial.mobileroom.jade"]); 
-				}
-		      
+		      RoomModel.findAll({}, function(rooms){ //.findAll is an ajax call to the back end
+		        self.element.html(Templates["pages/partial.rooms.jade"]({rooms:rooms})); //renders html partial.rooms.jade
+		      });
 	
 		},
 		 ":room_id route": function(data, room) {
