@@ -56,15 +56,9 @@
 	playarea = playarea_canvas[0].getContext('2d');
 	
 	
-	p1_scr = document.getElementById('p1_scr');
-	p2_scr = document.getElementById('p2_scr');
-	
-	
-	status_msg = document.getElementById('status');
-	debug = document.getElementById('debug');
+	p1_scr = $('#p1_scr');
+	p2_scr = $('#p2_scr');
 
-	up = -1;
-	down = 1;
 
 	//key codes
 	key_up = 38;
@@ -181,8 +175,6 @@ var paddle2Pos, paddle1Pos;
 	
 	var testCollisions = function() {
 
-
-
 			//check to see if ball went beyond paddles, and if so, score accordingly and reset playarea
 			if(ball['x'] <= 0) {
 				if (app.config.playersReady == true){
@@ -202,27 +194,17 @@ var paddle2Pos, paddle1Pos;
 			//check to see if ball hit top or bottom wall. if so, change direction
 			if((ball['y'] >= (pa['height'] - ball['height'])) || ball['y'] <= 8) {
 					ball_direction = -ball_direction;
-					var audioElement = document.createElement('audio');
-				audioElement.setAttribute('src', 'http://www.sounddogs.com/sound-effects/2219/mp3/413585_SOUNDDOGS__sp.mp3');
-				//audioElement.play();
-				}
+			}
 
 			//check to see if the ball hit a paddle, and if so, change ball angle dependant on where it hit the paddle
 			if((ball['x'] <= (paddle_1['x'] + paddle_1['width'])) && (ball['y'] >= paddle1Pos) && (ball['y'] <= (paddle1Pos + paddle_1['height']))) {
 				ball_direction = -ball_direction / 2;
 				speed += .5;
-				var audioElement = document.createElement('audio');
-				audioElement.setAttribute('src', 'http://www.sounddogs.com/sound-effects/2219/mp3/413585_SOUNDDOGS__sp.mp3');
-				//audioElement.play();
-				
 			}
 			
 			if(((ball['x'] + ball['width']) >= paddle_2['x']) && (ball['y'] >= paddle2Pos) && (ball['y'] <= (paddle2Pos + paddle_2['height']))) {
 				ball_direction = (180 + ball_direction) / 2;
 				speed += .5;
-				var audioElement = document.createElement('audio');
-				audioElement.setAttribute('src', 'http://www.sounddogs.com/sound-effects/2219/mp3/413585_SOUNDDOGS__sp.mp3');
-				//audioElement.play();
 			}
 	}
 	
@@ -330,7 +312,7 @@ var paddle2Pos, paddle1Pos;
 	})
 	
 	
-		init();
+init();
 	
 	
 	
