@@ -1,5 +1,4 @@
 	var mobile = mobile || {};
-
 	//centralize app settings
 	mobile.config = {
 		'server': {
@@ -10,16 +9,21 @@
 	
 	socket.on('clients', function(data){
 		if(data.clients.player1 == 'closed'){
-			$('#player1').html('<p>connected</p>');
+			$('#player1').hide();
 		}
 		if(data.clients.player1 == 'open'){
+			$('#player1').show();
 			$('#player1').html('<p>Join as Player 1</p>');
 		}
 		if(data.clients.player2 == 'closed'){
-			$('#player2').html('<p>connected</p>');
+			$('#player2').hide()
 		}
 		if(data.clients.player2 == 'open'){
+			$('#player2').show();
 			$('#player2').html('<p>Join as Player 2</p>');
+		}
+		if(data.clients.player1 == 'closed' && data.clients.player2 == 'closed'){
+			
 		}
 	})
 	
@@ -39,22 +43,47 @@
 
 	
 	var beta;
-	var paddlePos = 165;
+	var paddlePos = 1;
 	var self = this;
 	var idleSeconds = 30;
+	var oldLocation;
 	startPaddle = function(){ 
 		$('#mobileContent').hide();
+		$('#mobileControls').show();
 		socket.emit('paddleLocation', {paddlePos: paddlePos});
 		
-		window.addEventListener('touchmove', function(event){					
+		window.addEventListener("touchstart", function(event){
+			startLocation = paddlePos
+			console.log(oldLocation);
+			
+		}, false)
+		
+		window.addEventListener('touchmove', function(event){	
+		console.log('moving');					
 			resetTimer();
 			event.preventDefault();
     		var touch = event.touches[0];
-    		paddlePos = (touch.pageY / $(window).height() * 355);
-    		$('#paddlePosition').html(paddlePos);
+    		touchLocation = (touch.pageY / $(window).height() * 600);
+	    	paddlePos = touchLocation;
+	    		
+			if (paddlePos < 9){
+			      paddlePos = 9;			    
+		    }
+			if (paddlePos > 430){
+			    paddlePos = 430;
+			    
+		    }
+    		displayPos = Math.round(paddlePos*100)/100;
+    		$('#paddlePosition').html(displayPos);
     		socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer:MobilePlayer});
 	
 		}, false);
+		
+		window.addEventListener("touchend", function(event){
+			oldLocation = touchLocation;
+			console.log(oldLocation);
+			
+		}, false)
 	
 		var idleTimer;
 		function resetTimer(){

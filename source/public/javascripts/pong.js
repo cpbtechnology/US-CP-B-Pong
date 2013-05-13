@@ -7,10 +7,11 @@
 			'url': window.location.origin
 		},
 		'speed': 2, //controls the speed of the ball
-		'paddle_inc': 30, //how many pixels paddle can move in either direction
+		'paddle_inc': 3, //how many pixels paddle can move in either direction
 		'pause': false,
 		'gameOver': 5,
-		'playersReady': false
+		'playersReady': false,
+		'paddleHeight': 20
 	};
 	var socket = io.connect(app.config.server.url);
 	//setup dat-gui for visually modifying app settings
@@ -80,7 +81,6 @@
 	player_1 = 0;
 	player_2 = 1;
 
-
 	player_1_scr = 0; //player scores
 	player_2_scr = 0;
 	player_1_direction = null;
@@ -91,7 +91,8 @@
 	paddle_1 = new Array();
 	paddle_2 = new Array();
 	ball = new Array();
-
+	paddle_1['height'] = 120;
+	paddle_2['height'] = 120;
 
 	function sleep(numberMillis) {
 		var now = new Date();
@@ -101,13 +102,14 @@
 			if(now.getTime() > exitTime) return;
 		}
 	}
-
+	
 	function init() {
 		pa['width'] = 900;
 		pa['height'] = 400;
 		pa['player_margin'] = 15; //area behind player paddles
-		pa['foreground'] = "#ffffff";
-		pa['background'] = "#3193a5";
+		pa['foreground'] = "#ec008c";
+		pa['background'] = "#000000";
+		pa['ball'] = "#fff22d";
 		img = new Image();
 		img.src = '../images/pong-bg.jpg';
 		
@@ -117,14 +119,14 @@
 		divider['width'] = 4;
 
 		paddle_1['width'] = 8;
-		paddle_1['height'] = 120;
+		
 		paddle_1['x'] = pa['player_margin'];
-		paddle_1['y'] = (pa['height'] / 2) - (paddle_1['height'] / 2);
+		paddle1Pos = (pa['height'] / 2) - (paddle_1['height'] / 2);
 
 		paddle_2['width'] = 8;
-		paddle_2['height'] = 120;
+		
 		paddle_2['x'] = (pa['width'] - pa['player_margin'] - paddle_2['width']);
-		paddle_2['y'] = (pa['height'] / 2) - (paddle_2['height'] / 2);
+		paddle2Pos = (pa['height'] / 2) - (paddle_2['height'] / 2);
 
 		ball['width'] = 20;
 		ball['height'] = 20;
@@ -133,7 +135,7 @@
 		
 		function ballDirection(){
 			ball_direction = Math.random() * 360;
-			if ( ball_direction > 110 && ball_direction < 70 || ball_direction > 250 && ball_direction < 290 ){
+			if ( ball_direction > 120 && ball_direction < 60 || ball_direction > 240 && ball_direction < 300 ){
 				ballDirection() //run again
 			}	
 		}
@@ -151,20 +153,12 @@ var paddle2Pos, paddle1Pos;
 		playarea.strokeStyle = pa['foreground'];
 		playarea.fillRect(0, 0, pa['width'], pa['height']);
 		playarea.drawImage(img,0, 0);
-		
-		//move paddles
-		if(player_1_direction != null) {
-			if(player_1_direction == up) paddle_1['y'] = paddle_1['y'] - paddle_inc;
-			else paddle_1['y'] = paddle_1['y'] + paddle_inc;
-		}
-		if(player_2_direction != null) {
-			if(player_2_direction == up) paddle_2['y'] = paddle_2['y'] - paddle_inc;
-			else paddle_2['y'] = paddle_2['y'] + paddle_inc;
-		}
+
 
 		playarea.rect(paddle_1.x, paddle1Pos, paddle_1.width, paddle_1.height);	
 		playarea.rect(paddle_2.x, paddle2Pos, paddle_2.width, paddle_2.height);
-		
+		playarea.fillStyle = pa['foreground'];
+		playarea.fill();
 		
 		//move ball
 		playarea.rect(ball['x'], ball['y'], ball['width'], ball['height']);
@@ -172,7 +166,7 @@ var paddle2Pos, paddle1Pos;
 		ball['y'] = ball['y'] + Math.sin((ball_direction) * Math.PI / 180) * speed;
 
 
-		playarea.fillStyle = pa['foreground'];
+		playarea.fillStyle = pa['ball'];
 		playarea.fill();
 
 		//redraw divider
@@ -187,9 +181,7 @@ var paddle2Pos, paddle1Pos;
 	
 	var testCollisions = function() {
 
-		//make sure paddles don't go beyond play area
-			if(((paddle1Pos <= 0) && (player_1_direction == up)) || ((paddle1Pos >= (pa['height'] - paddle_1['height'])) && (player_1_direction == down))) player_1_direction = null;
-			if(((paddle2Pos <= 0) && (player_2_direction == up)) || ((paddle2Pos >= (pa['height'] - paddle_2['height'])) && (player_2_direction == down))) player_2_direction = null;
+
 
 			//check to see if ball went beyond paddles, and if so, score accordingly and reset playarea
 			if(ball['x'] <= 0) {
@@ -212,7 +204,7 @@ var paddle2Pos, paddle1Pos;
 					ball_direction = -ball_direction;
 					var audioElement = document.createElement('audio');
 				audioElement.setAttribute('src', 'http://www.sounddogs.com/sound-effects/2219/mp3/413585_SOUNDDOGS__sp.mp3');
-				audioElement.play();
+				//audioElement.play();
 				}
 
 			//check to see if the ball hit a paddle, and if so, change ball angle dependant on where it hit the paddle
@@ -221,7 +213,7 @@ var paddle2Pos, paddle1Pos;
 				speed += .5;
 				var audioElement = document.createElement('audio');
 				audioElement.setAttribute('src', 'http://www.sounddogs.com/sound-effects/2219/mp3/413585_SOUNDDOGS__sp.mp3');
-				audioElement.play();
+				//audioElement.play();
 				
 			}
 			
@@ -230,7 +222,7 @@ var paddle2Pos, paddle1Pos;
 				speed += .5;
 				var audioElement = document.createElement('audio');
 				audioElement.setAttribute('src', 'http://www.sounddogs.com/sound-effects/2219/mp3/413585_SOUNDDOGS__sp.mp3');
-				audioElement.play();
+				//audioElement.play();
 			}
 	}
 	
@@ -239,10 +231,12 @@ var paddle2Pos, paddle1Pos;
 	var setScore = function(p) {
 			if(p == player_1) {
 				player_1_scr++;
+				paddle_2['height'] =  paddle_2['height'] - ((player_1_scr/app.config.gameOver)/3 * paddle_2['height'])
 				$('#p1_scr').html(player_1_scr);
 			}
 			if(p == player_2) {
 				player_2_scr++;
+				paddle_1['height'] = paddle_1['height'] - ((player_2_scr/app.config.gameOver)/3 * paddle_1['height'])
 				$('#p2_scr').html(player_2_scr);
 			}
 			if(player_2_scr === app.config.gameOver || player_1_scr == app.config.gameOver){
@@ -274,48 +268,6 @@ var paddle2Pos, paddle1Pos;
 		  });
 		
 	}
-	//handle input
-	document.onkeydown = function(ev) {
-		switch(ev.keyCode) {
-		case key_W:
-			player_1_direction = up;
-			break;
-		case key_S:
-			player_1_direction = down;
-			break;
-		case key_up:
-			player_2_direction = up;
-			break;
-		case key_down:
-			player_2_direction = down;
-			break;
-		}
-	}
-
-	document.onkeyup = function(ev) {
-		switch(ev.keyCode) {
-		case key_W:
-		case key_S:
-			player_1_direction = null;
-			break;
-		case key_up:
-		case key_down:
-			player_2_direction = null;
-			break;
-		case key_pause:
-			if(pause == false) {
-				clearInterval(game);
-				status_msg.style.visibility = "visible";
-				pause = true;
-			} else {
-				game = setInterval(main, 25);
-				status_msg.style.visibility = "hidden";
-				pause = false;
-			}
-			break;
-		}
-	}
-
 
 	var main = function() {
 		self.renderPlayarea();
@@ -325,13 +277,24 @@ var paddle2Pos, paddle1Pos;
 
 	socket.on('sendPaddledata', function(data){
 		currentPlayer = data.data.MobilePlayer;
-		if (data.data.MobilePlayer == 1){
+		if (currentPlayer == 1){
 			paddle1Pos = data.data.paddlePos;
+			if(paddle1Pos <= 0){		//make sure paddles don't go beyond play area
+				paddle1Pos = 0
+			} 
+			if(paddle1Pos >= (pa['height'] - paddle_1['height'])){
+				paddle1Pos = (pa['height'] - paddle_1['height']);
+			} 
 		}
-		if (data.data.MobilePlayer == 2){		
+		if (currentPlayer == 2){		
 			paddle2Pos = data.data.paddlePos;
+			if(paddle2Pos <= 0){		//make sure paddles don't go beyond play area
+				paddle2Pos = 0
+			} 
+			if(paddle2Pos >= (pa['height'] - paddle_2['height'])){
+				paddle2Pos = (pa['height'] - paddle_2['height']);
+			} 			
 		}
-		
 	});
 	setInterval(sendPaddleData, 10);
 	function sendPaddleData(){
