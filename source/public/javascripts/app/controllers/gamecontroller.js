@@ -21,6 +21,7 @@
 	      },
 		"route": function(data, room){
 			var self=this;
+
 		      RoomModel.findAll({}, function(rooms){ //.findAll is an ajax call to the back end
 		        self.element.html(Templates["pages/partial.rooms.jade"]({rooms:rooms})); //renders html partial.rooms.jade
 		      });

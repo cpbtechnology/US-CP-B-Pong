@@ -9,7 +9,7 @@
 		'speed': 2, //controls the speed of the ball
 		'paddle_inc': 3, //how many pixels paddle can move in either direction
 		'pause': false,
-		'gameOver': 5,
+		'gameOver': 2,
 		'playersReady': false,
 		'paddleHeight': 20
 	};
@@ -152,14 +152,12 @@ var paddle2Pos, paddle1Pos;
 
 		playarea.fillStyle = pa['ball'];
 		playarea.fill();
-
 		//redraw divider
 		playarea.lineWidth = divider['width'];
 		playarea.lineTo(divider['pos'], 0);
 		playarea.lineTo(divider['pos'], pa['height'] = 467);
 		playarea.lineWidth = 1;
 		playarea.closePath();
-	
 		
 	};
 	
@@ -240,7 +238,17 @@ var paddle2Pos, paddle1Pos;
 		  });
 		
 	}
-
+	var newGame = function(){
+		console.log('newgame');
+		player_1_scr = 0
+		$('#p1_scr').html(player_1_scr);
+		player_2_scr = 0
+		$('#p2_scr').html(player_2_scr);
+		
+		paddle_2['height'] =  120;
+		paddle_1['height'] =  120;
+		
+	}
 	var main = function() {
 		self.renderPlayarea();
     }
@@ -291,11 +299,12 @@ var paddle2Pos, paddle1Pos;
 		}
 		if(data.clients.player1 == 'open' || data.clients.player2 == 'open' ){
 			$('#instructions').show();
+			newGame();
 		}
 		if(data.clients.player1 == 'closed' && data.clients.player2 == 'closed' ){
 			$('#instructions').hide();
 			app.config.playersReady = true;
-			
+			console.log('Both Playeres have Joined');
 			
 		}
 		

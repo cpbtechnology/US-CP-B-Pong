@@ -23,7 +23,7 @@
 			$('#player2').html('<p>Join as Player 2</p>');
 		}
 		if(data.clients.player1 == 'closed' && data.clients.player2 == 'closed'){
-			
+			$('#roomsClosed').show();
 		}
 	})
 	
