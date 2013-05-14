@@ -54,24 +54,14 @@
 
 	playarea_canvas = $('#paper');
 	playarea = playarea_canvas[0].getContext('2d');
-	
-	
+		
 	p1_scr = $('#p1_scr');
 	p2_scr = $('#p2_scr');
-
-
-	//key codes
-	key_up = 38;
-	key_down = 40;
-	key_W = 87;
-	key_S = 83;
-	key_pause = 32;
 
 	speed = app.config.speed; //controls the speed of the ball
 	paddle_inc = app.config.paddle_inc; //how many pixels paddle can move in either direction
 	pause = app.config.pause;
-	var playerId = 0;
-	playerId = 2;
+
 	player_1 = 0;
 	player_2 = 1;
 
