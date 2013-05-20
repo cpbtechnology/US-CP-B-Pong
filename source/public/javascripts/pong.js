@@ -283,25 +283,26 @@ var paddle2Pos, paddle1Pos;
 	};
 
 	socket.on('clients', function(data){ // Logic to say which players are connected on game
-		if(data.clients.player1 == 'closed'){ 
+		console.log(data.clients.player1.position);
+		if(data.clients.player1.position == 'closed'){ 
 			$('#player1').addClass('connected');
 		}
-		if(data.clients.player2 == 'closed'){
+		if(data.clients.player2.position  == 'closed'){
 			$('#player2').addClass('connected');
 		}
-		if(data.clients.player1 == 'open'){
+		if(data.clients.player1.position  == 'open'){
 			$('#player1').removeClass('connected');
 			paddle1Pos = -1000;
 		}
-		if(data.clients.player2 == 'open'){
+		if(data.clients.player2.position  == 'open'){
 			$('#player2').removeClass('connected');
 			paddle2Pos = -1000;
 		}
-		if(data.clients.player1 == 'open' || data.clients.player2 == 'open' ){
+		if(data.clients.player1.position  == 'open' || data.clients.player2.position == 'open' ){
 			$('#instructions').show();
 			newGame();
 		}
-		if(data.clients.player1 == 'closed' && data.clients.player2 == 'closed' ){
+		if(data.clients.player1.position  == 'closed' && data.clients.player2.position  == 'closed' ){
 			$('#instructions').hide();
 			app.config.playersReady = true;
 			console.log('Both Playeres have Joined');

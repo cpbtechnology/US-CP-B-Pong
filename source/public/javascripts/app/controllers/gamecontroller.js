@@ -39,8 +39,9 @@
 				}	
 				else {		
 					self.element.html(Templates["pages/partial.room.jade"]);
-					//self.element.html(Templates["pages/partial.mobileroom.jade"]); 
+					//self.element.html(Templates["pages/partial.mobileroom.jade"]);
 				}
+						
 				if(!self.socket){
 					self.socket = io.connect(window.location.origin); // points to root of current domain name url
 				}
@@ -48,8 +49,9 @@
 					self.socket.socket.connect();					
 				}
 				self.socket.emit('join', {room:room._id, roomName:room.title});  
-
 				console.log('joined room: '+ room.title);
+					 
+				
 			});
 	    },
 	    getQueryString: function(){

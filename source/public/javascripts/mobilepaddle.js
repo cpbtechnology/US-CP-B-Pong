@@ -13,6 +13,7 @@
 		}
 		if(data.clients.player1 == 'open'){
 			$('#player1').show();
+			$('#player2').removeClass('connected');
 			$('#player1').html('<p>Join as Player 1</p>');
 		}
 		if(data.clients.player2 == 'closed'){
@@ -20,6 +21,7 @@
 		}
 		if(data.clients.player2 == 'open'){
 			$('#player2').show();
+			$('#player2').removeClass('connected');
 			$('#player2').html('<p>Join as Player 2</p>');
 		}
 		if(data.clients.player1 == 'closed' && data.clients.player2 == 'closed'){
@@ -30,12 +32,14 @@
 	$('#player1').click(function(){
 		socket.emit('player1');
 		MobilePlayer = 1;	
+		$('#player1').addClass('connected');
 		$('#player').html( 'Player =  ' + MobilePlayer );
 		startPaddle();
 	})
 	$('#player2').click(function(){
 		socket.emit('player2');
 		MobilePlayer = 2;
+		$('#player1').addClass('connected');
 		$('#player').html( 'Player =  ' + MobilePlayer );
 		startPaddle();
 	})
@@ -45,7 +49,7 @@
 	var beta;
 	var paddlePos = 1;
 	var self = this;
-	var idleSeconds = 30;
+	var idleSeconds = 50;
 	var oldLocation;
 	startPaddle = function(){ 
 		$('#mobileContent').hide();
