@@ -129,7 +129,7 @@
 		
 	}
 var paddle2Pos, paddle1Pos;
-	var renderPlayarea = function () {	
+		var renderPlayarea = function () {	
 		
 		playarea.beginPath();
 		playarea.clearRect(0, 0, pa.width, pa.height);
@@ -210,17 +210,10 @@ var paddle2Pos, paddle1Pos;
 				$('#p2_scr').html(player_2_scr);
 			}
 			if(player_2_scr === app.config.gameOver || player_1_scr == app.config.gameOver){
-				console.log('game over');
-				socket.emit('newGame');
-				console.log(currentPlayer);
 				playerWins();
 			}
 		}
 	var playerWins = function(){
-		player_1_scr = 0
-		$('#p1_scr').html(player_1_scr);
-		player_2_scr = 0
-		$('#p2_scr').html(player_2_scr);
 	
 		if (player_1_scr == app.config.gameOver){
 			$('#congrats').html('Player1 Wins!');
@@ -230,16 +223,23 @@ var paddle2Pos, paddle1Pos;
 		}
 		
 		$('#winner').animate({
-		    opacity: 0.25,
-		    left: '+=50',
-		    height: 'toggle'
+		    opacity: 1,
+		    height: 'toggle',
+		    opacity: 1,
 		  }, 5000, function() {
-		    // Animation complete.
+		     $('#winner').hide();	     
+		     	
+		     	player_1_scr = 0
+				$('#p1_scr').html(player_1_scr);
+				player_2_scr = 0
+				$('#p2_scr').html(player_2_scr);	     
+				
+				socket.emit('newGame');
 		  });
+		 
 		
 	}
 	var newGame = function(){
-		console.log('newgame');
 		player_1_scr = 0
 		$('#p1_scr').html(player_1_scr);
 		player_2_scr = 0
@@ -283,7 +283,7 @@ var paddle2Pos, paddle1Pos;
 	};
 
 	socket.on('clients', function(data){ // Logic to say which players are connected on game
-		console.log(data.clients.player1.position);
+		
 		if(data.clients.player1.position == 'closed'){ 
 			$('#player1').addClass('connected');
 		}

@@ -8,23 +8,23 @@
 	var socket = io.connect(window.location);
 	
 	socket.on('clients', function(data){
-		if(data.clients.player1 == 'closed'){
+		if(data.clients.player1.position == 'closed'){
 			$('#player1').hide();
 		}
-		if(data.clients.player1 == 'open'){
+		if(data.clients.player1.position == 'open'){
 			$('#player1').show();
 			$('#player2').removeClass('connected');
 			$('#player1').html('<p>Join as Player 1</p>');
 		}
-		if(data.clients.player2 == 'closed'){
+		if(data.clients.player2.position == 'closed'){
 			$('#player2').hide()
 		}
-		if(data.clients.player2 == 'open'){
+		if(data.clients.player2.position == 'open'){
 			$('#player2').show();
 			$('#player2').removeClass('connected');
 			$('#player2').html('<p>Join as Player 2</p>');
 		}
-		if(data.clients.player1 == 'closed' && data.clients.player2 == 'closed'){
+		if(data.clients.player1.position == 'closed' && data.clients.player2.position == 'closed'){
 			$('#roomsClosed').show();
 		}
 	})

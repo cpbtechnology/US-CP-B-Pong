@@ -70,7 +70,7 @@ var players = [];
 
 var MobilePlayer;
 
-io.sockets.on('connection', function(socket){
+io.sockets.on('connection', function(socket, data){
 	socket.emit('connected', {message: 'Connected to NodePong!', from: "System"});
 	
 	socket.on('player1', function(){
@@ -83,15 +83,13 @@ io.sockets.on('connection', function(socket){
 		clients.player2.playerID = socket.id;
 	})
 	
-	countUsers = function(){
-		console.log(clients);
-		socket.broadcast.emit('clients', {clients: clients})
-		
-	}	
-	setInterval(countUsers, 1000);
+	countUsers = function(data){
+		socket.broadcast.emit('clients', {clients: clients})		
+	} 	
+	setInterval(countUsers, 5000);
 	
 	socket.on('paddleLocation', function(data, room, MobilePlayer){
-		socket.broadcast.emit('sendPaddledata', {data:data});
+		    	socket.broadcast.emit('sendPaddledata', {data:data});
 	});	
 	socket.on('join', function (data, ball) {
 	console.log(socket.id);
@@ -121,8 +119,10 @@ io.sockets.on('connection', function(socket){
 	});
 	socket.on('newGame', function(){
 		socket.broadcast.emit('newGameMobile');
-		clients.player1 = 'open';
-		clients.player2 = 'open';	
+		clients.player1.position = 'open';
+		clients.player1.playerID = 0;
+		clients.player2.position = 'open';
+		clients.player2.playerID = 0;		
 	})
 	
 	
