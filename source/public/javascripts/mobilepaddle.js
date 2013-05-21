@@ -77,7 +77,7 @@
 			    paddlePos = 430;
 			    
 		    }
-    		displayPos = Math.round(paddlePos*100)/100;
+    		displayPos = Math.round(Math.round(paddlePos*100)/100);
     		$('#paddlePosition').html(displayPos);
     		socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer:MobilePlayer});
 	
