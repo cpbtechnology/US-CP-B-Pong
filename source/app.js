@@ -43,12 +43,12 @@ var server = http.createServer(app)
 var io = require('socket.io').listen(server);
 var RoomModel = require('./models/roommodel');
 
-/*
- io.configure(function () { 
-	  io.set("transports", ["xhr-polling"]); 
-	  io.set("polling duration", 10); 
-	});
-*/
+
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
+
 
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
