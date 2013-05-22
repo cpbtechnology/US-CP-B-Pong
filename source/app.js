@@ -65,7 +65,7 @@ var clients = {
 		'position': 'open',	
 		'playerID': 0
 		}
-}
+	}
 
 
 
@@ -87,18 +87,16 @@ io.sockets.on('connection', function(socket,data){
 
 		
 	if(roomID){
-				countUsers = function(data){
-						//socket.broadcast.emit('clients', {clients: clients})	
-						socket.broadcast.to(roomID).emit('clients', {clients: clients});	
-					}
-				setInterval(countUsers, 1000);
-				
-				socket.on('paddleLocation', function(data, MobilePlayer){
-					socket.broadcast.to(roomID).emit('sendPaddledata', {data:data});
-				});	
-
+		countUsers = function(data){
+				//socket.broadcast.emit('clients', {clients: clients})	
+				socket.broadcast.to(roomID).emit('clients', {clients: clients});	
+			}
+		setInterval(countUsers, 1000);
+		
+		socket.on('paddleLocation', function(data, MobilePlayer){
+			socket.broadcast.to(roomID).emit('sendPaddledata', {data:data});
+		});	
 	}
-
 	
 	socket.on('join', function (data, ball) {
 			console.log(data);
@@ -143,8 +141,7 @@ io.sockets.on('connection', function(socket,data){
 		
 		if(socket.id === clients.player1.playerID){
 			clients.player1.position = 'open';
-			clients.player1.playerID = 0;
-			
+			clients.player1.playerID = 0;	
 		}
 		if(socket.id === clients.player2.playerID){
 			clients.player2.position = 'open';
@@ -153,7 +150,6 @@ io.sockets.on('connection', function(socket,data){
 		}
 		
 	});
-	
 	
 }); // End Connection
 
