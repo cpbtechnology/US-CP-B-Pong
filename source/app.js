@@ -50,6 +50,7 @@ io.configure(function () {
 });
 
 
+
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
@@ -66,12 +67,13 @@ var clients = {
 		}
 }
 
-var players = [];
+
 
 var MobilePlayer;
-
-io.sockets.on('connection', function(socket, data){
+var roomID;
+io.sockets.on('connection', function(socket,data){
 	socket.emit('connected', {message: 'Connected to NodePong!', from: "System"});
+	
 	
 	socket.on('player1', function(){
 		clients.player1.position = 'closed';
@@ -82,27 +84,36 @@ io.sockets.on('connection', function(socket, data){
 		clients.player2.position = 'closed';
 		clients.player2.playerID = socket.id;
 	})
+
+		
+	if(roomID){
+				countUsers = function(data){
+						//socket.broadcast.emit('clients', {clients: clients})	
+						socket.broadcast.to(roomID).emit('clients', {clients: clients});	
+					}
+				setInterval(countUsers, 1000);
+				
+				socket.on('paddleLocation', function(data, MobilePlayer){
+					socket.broadcast.to(roomID).emit('sendPaddledata', {data:data});
+				});	
+
+	}
+
 	
-	countUsers = function(data){
-		socket.broadcast.emit('clients', {clients: clients})		
-	} 	
-	setInterval(countUsers, 5000);
-	
-	socket.on('paddleLocation', function(data, room, MobilePlayer){
-		    	socket.broadcast.emit('sendPaddledata', {data:data});
-	});	
 	socket.on('join', function (data, ball) {
-	console.log(socket.id);
+			console.log(data);
 	    RoomModel.findById(data.room, 'title', function(err, room){
 	    	if(!err && data.room){
 		    	socket.join(room._id);
-		    	console.log('joined'); 	
-		    	
+		    	console.log('joined');
+		    	roomID = room._id 	
 		    }		
-		}); // End RoomModel
+		}); // End RoomModel 
 	}); // End  Join
 	
+	
 	socket.on('leave', function (data, MobilePlayer) { 
+
 		console.log('==================LEAVE    LEAVE=======================')
 		RoomModel.findById(data.room, 'title', function(err,room){
 			console.log(data);
@@ -127,6 +138,7 @@ io.sockets.on('connection', function(socket, data){
 	
 	
 	socket.on('disconnect', function (data, ball, MobilePlayer) { 
+		console.log('===============DISCONNECT=======================')
 		console.log(socket.id);
 		
 		if(socket.id === clients.player1.playerID){
