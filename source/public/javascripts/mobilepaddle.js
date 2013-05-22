@@ -81,9 +81,14 @@
     		paddlePos = displayPos
     		$('#paddlePosition').html(displayPos);
     		
-    		socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer:MobilePlayer});
-	
+			
 		}, false);
+		function sendLocation(){
+			socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer:MobilePlayer});
+		}
+		setInterval(sendLocation, 10)
+		
+		
 		
 		window.addEventListener("touchend", function(event){
 			oldLocation = touchLocation;
