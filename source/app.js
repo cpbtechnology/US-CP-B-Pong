@@ -44,10 +44,12 @@ var io = require('socket.io').listen(server);
 var RoomModel = require('./models/roommodel');
 
 
+
 io.configure(function () { 
   io.set("transports", ["xhr-polling"]); 
   io.set("polling duration", 10); 
 });
+
 
 
 
@@ -78,28 +80,28 @@ io.sockets.on('connection', function(socket,data){
 	socket.on('player1', function(){
 		clients.player1.position = 'closed';
 		clients.player1.playerID = socket.id;
+		countPlayers();
 		
 	})
 	socket.on('player2', function(){
 		clients.player2.position = 'closed';
 		clients.player2.playerID = socket.id;
+		
+		countPlayers();
 	})
 
-		
-	if(roomID){
-		countUsers = function(data){
-				//socket.broadcast.emit('clients', {clients: clients})	
-				socket.broadcast.to(roomID).emit('clients', {clients: clients});	
-			}
-		setInterval(countUsers, 1000);
-		
+	countPlayers = function(){	
+		console.log(roomID);
+		console.log(clients);
+		socket.broadcast.to(roomID).emit('clients', {clients: clients});	
+	}	
+	if(roomID){		
 		socket.on('paddleLocation', function(data, MobilePlayer){
 			socket.broadcast.to(roomID).emit('sendPaddledata', {data:data});
 		});	
 	}
 	
 	socket.on('join', function (data, ball) {
-			console.log(data);
 	    RoomModel.findById(data.room, 'title', function(err, room){
 	    	if(!err && data.room){
 		    	socket.join(room._id);
@@ -107,12 +109,11 @@ io.sockets.on('connection', function(socket,data){
 		    	roomID = room._id 	
 		    }		
 		}); // End RoomModel 
+		countPlayers();
 	}); // End  Join
 	
 	
 	socket.on('leave', function (data, MobilePlayer) { 
-
-		console.log('==================LEAVE    LEAVE=======================')
 		RoomModel.findById(data.room, 'title', function(err,room){
 			console.log(data);
 			if(!err && data.room){
@@ -125,13 +126,15 @@ io.sockets.on('connection', function(socket,data){
 		if (data.MobilePlayer == 2){		
 			clients.player2 = 'open';
 		}
+		countPlayers();
 	});
 	socket.on('newGame', function(){
 		socket.broadcast.emit('newGameMobile');
 		clients.player1.position = 'open';
 		clients.player1.playerID = 0;
 		clients.player2.position = 'open';
-		clients.player2.playerID = 0;		
+		clients.player2.playerID = 0;
+		countPlayers();		
 	})
 	
 	
@@ -146,8 +149,8 @@ io.sockets.on('connection', function(socket,data){
 		if(socket.id === clients.player2.playerID){
 			clients.player2.position = 'open';
 			clients.player2.playerID = 0;
-			
 		}
+		countPlayers();
 		
 	});
 	
