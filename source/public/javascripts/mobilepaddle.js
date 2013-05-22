@@ -49,7 +49,7 @@
 	var beta;
 	var paddlePos = 1;
 	var self = this;
-	var idleSeconds = 50;
+	var idleSeconds = 5;
 	var oldLocation;
 	startPaddle = function(){ 
 		$('#mobileContent').hide();
@@ -81,14 +81,9 @@
     		paddlePos = displayPos
     		$('#paddlePosition').html(displayPos);
     		
-			
-		}, false);
-		function sendLocation(){
 			socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer:MobilePlayer});
-		}
-		setInterval(sendLocation, 10)
-		
-		
+
+		}, false);
 		
 		window.addEventListener("touchend", function(event){
 			oldLocation = touchLocation;
