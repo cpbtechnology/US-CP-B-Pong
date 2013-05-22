@@ -1,6 +1,5 @@
 	//make a namespace
 	var app = app || {};
-	console.log('app read');
 	//centralize app settings
 	app.config = {
 		'server': {
@@ -283,7 +282,6 @@ var paddle2Pos, paddle1Pos;
 	};
 
 	socket.on('clients', function(data){ // Logic to say which players are connected on game
-		
 		if(data.clients.player1.position == 'closed'){ 
 			$('#player1').addClass('connected');
 		}
@@ -305,7 +303,6 @@ var paddle2Pos, paddle1Pos;
 		if(data.clients.player1.position  == 'closed' && data.clients.player2.position  == 'closed' ){
 			$('#instructions').hide();
 			app.config.playersReady = true;
-			console.log('Both Playeres have Joined');
 			
 		}
 		

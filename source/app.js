@@ -45,12 +45,14 @@ var RoomModel = require('./models/roommodel');
 
 
 
+/*
 io.configure(function () { 
   io.set("transports", ["xhr-polling"]); 
   io.set("polling duration", 10); 
 });
 
 
+*/
 
 
 server.listen(app.get('port'), function(){
@@ -91,8 +93,6 @@ io.sockets.on('connection', function(socket,data){
 	})
 
 	countPlayers = function(){	
-		console.log(roomID);
-		console.log(clients);
 		socket.broadcast.to(roomID).emit('clients', {clients: clients});	
 	}	
 	if(roomID){		
@@ -105,7 +105,6 @@ io.sockets.on('connection', function(socket,data){
 	    RoomModel.findById(data.room, 'title', function(err, room){
 	    	if(!err && data.room){
 		    	socket.join(room._id);
-		    	console.log('joined');
 		    	roomID = room._id 	
 		    }		
 		}); // End RoomModel 
@@ -115,16 +114,18 @@ io.sockets.on('connection', function(socket,data){
 	
 	socket.on('leave', function (data, MobilePlayer) { 
 		RoomModel.findById(data.room, 'title', function(err,room){
-			console.log(data);
 			if(!err && data.room){
 				socket.leave(room._id);
 			}
 		})
-		if (data.MobilePlayer == 1){
-			clients.player1 = 'open';
+		
+		if(socket.id === clients.player1.playerID){
+			clients.player1.position = 'open';
+			clients.player1.playerID = 0;	
 		}
-		if (data.MobilePlayer == 2){		
-			clients.player2 = 'open';
+		if(socket.id === clients.player2.playerID){
+			clients.player2.position = 'open';
+			clients.player2.playerID = 0;
 		}
 		countPlayers();
 	});
@@ -139,9 +140,6 @@ io.sockets.on('connection', function(socket,data){
 	
 	
 	socket.on('disconnect', function (data, ball, MobilePlayer) { 
-		console.log('===============DISCONNECT=======================')
-		console.log(socket.id);
-		
 		if(socket.id === clients.player1.playerID){
 			clients.player1.position = 'open';
 			clients.player1.playerID = 0;	
