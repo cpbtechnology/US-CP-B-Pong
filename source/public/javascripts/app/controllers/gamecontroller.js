@@ -34,7 +34,7 @@
 				var aryQueryString = self.getQueryString();
 								
 				self.room = room;	
-				if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) || aryQueryString.mobile == "true") {
+				if( /Android|webOS|iPhone|iPad|iPod|iemobile|BlackBerry/i.test(navigator.userAgent) || aryQueryString.mobile == "true") {
 					self.element.html(Templates["pages/partial.mobileroom.jade"]);
 				}	
 				else {		
