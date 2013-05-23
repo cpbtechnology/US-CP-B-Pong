@@ -45,14 +45,12 @@ var RoomModel = require('./models/roommodel');
 
 
 
-/*
+
 io.configure(function () { 
   io.set("transports", ["xhr-polling"]); 
   io.set("polling duration", 10); 
 });
 
-
-*/
 
 
 server.listen(app.get('port'), function(){
