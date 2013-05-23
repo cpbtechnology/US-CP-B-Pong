@@ -8,7 +8,7 @@
 		'speed': 2, //controls the speed of the ball
 		'paddle_inc': 3, //how many pixels paddle can move in either direction
 		'pause': false,
-		'gameOver': 2,
+		'gameOver': 5,
 		'playersReady': false,
 		'paddleHeight': 20
 	};
@@ -235,7 +235,6 @@ var paddle2Pos, paddle1Pos;
 				
 				socket.emit('newGame');
 		  });
-		 
 		
 	}
 	var newGame = function(){
@@ -305,7 +304,6 @@ var paddle2Pos, paddle1Pos;
 			app.config.playersReady = true;
 			
 		}
-		
 	})
 	
 	

@@ -49,7 +49,7 @@
 	var beta;
 	var paddlePos = 1;
 	var self = this;
-	var idleSeconds = 5;
+	var idleSeconds = 20;
 	var oldLocation;
 	startPaddle = function(){ 
 		$('#mobileContent').hide();
