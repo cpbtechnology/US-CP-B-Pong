@@ -81,6 +81,7 @@
     		paddlePos = displayPos
     		$('#paddlePosition').html(displayPos);
     		
+    		
 			socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer:MobilePlayer});
 
 		}, false);
