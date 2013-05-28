@@ -189,7 +189,7 @@ var paddle2Pos, paddle1Pos;
 				speed += .5;
 			}
 			
-			if(((ball['x'] + ball['width']) >= paddle_2['x']) && (ball['y'] >= paddle2Pos) && (ball['y'] <= (paddle2Pos + paddle_2['height']))) {
+			if(((ball['x'] + ball['width']) >= paddle_2['x']) && (ball['y'] >= paddle2Pos) && (ball['y'] <= (paddle2Pos + paddle_2['height']))){
 				ball_direction = (180 + ball_direction) / 2;
 				speed += .5;
 			}

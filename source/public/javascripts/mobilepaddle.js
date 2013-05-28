@@ -50,46 +50,35 @@
 	var paddlePos = 1;
 	var self = this;
 	var idleSeconds = 20;
-	var oldLocation;
+	var oldLocation = 0;
+	var oldTouch = 350;
 	startPaddle = function(){ 
 		$('#mobileContent').hide();
 		$('#mobileControls').show();
 		socket.emit('paddleLocation', {paddlePos: paddlePos});
 		
-		window.addEventListener("touchstart", function(event){
-			startLocation = paddlePos
-			console.log(oldLocation);
-			
-		}, false)
+
 		
 		window.addEventListener('touchmove', function(event){	
-		console.log('moving');					
 			resetTimer();
 			event.preventDefault();
-    		var touch = event.touches[0];
-    		touchLocation = (touch.pageY / $(window).height() * 600);
-	    	paddlePos = touchLocation;
-	    		
-			if (paddlePos < 9){
-			      paddlePos = 9;			    
-		    }
-			if (paddlePos > 430){
-			    paddlePos = 430;
-			    
-		    }
-    		displayPos = Math.round(Math.round(paddlePos*100)/100);
-    		paddlePos = displayPos
-    		$('#paddlePosition').html(displayPos);
+    		touch = event.touches[0];
+ 
+    		touchLocation = (touch.pageY / $(window).height());
+			paddlePos = touchLocation *540;
+			
+			
+			
+    		//incPaddle(touchLocation)
+			displayPos = Math.round(Math.round(touchLocation*100));
     		
-    		
+    		$('#paddlePosition').html(displayPos +15);
 			socket.emit('paddleLocation', {paddlePos: paddlePos, MobilePlayer:MobilePlayer});
-
+			
 		}, false);
 		
 		window.addEventListener("touchend", function(event){
 			oldLocation = touchLocation;
-			console.log(oldLocation);
-			
 		}, false)
 	
 		var idleTimer;
