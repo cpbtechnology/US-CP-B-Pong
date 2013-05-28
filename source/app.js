@@ -138,7 +138,17 @@ io.sockets.on('connection', function(socket,data){
 		clients.player2.playerID = 0;
 		countPlayers();		
 	})
-	
+	socket.on('playerbacks', function(data ){ // Check if player presses back in browser
+		if(socket.id === clients.player1.playerID){
+			clients.player1.position = 'open';
+			clients.player1.playerID = 0;	
+		}
+		if(socket.id === clients.player2.playerID){
+			clients.player2.position = 'open';
+			clients.player2.playerID = 0;
+		}
+		countPlayers();
+	});
 	
 	socket.on('disconnect', function (data, ball, MobilePlayer) { 
 		if(socket.id === clients.player1.playerID){

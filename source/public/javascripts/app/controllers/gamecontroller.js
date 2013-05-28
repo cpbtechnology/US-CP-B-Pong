@@ -21,11 +21,13 @@
 	      },
 		"route": function(data, room){
 			var self=this;
-
 		      RoomModel.findAll({}, function(rooms){ //.findAll is an ajax call to the back end
 		        self.element.html(Templates["pages/partial.rooms.jade"]({rooms:rooms})); //renders html partial.rooms.jade
 		      });
-	
+		     if( /Android|webOS|iPhone|iPad|iPod|iemobile|BlackBerry/i.test(navigator.userAgent) || aryQueryString.mobile == "true") {
+		    	 socket.emit('playerbacks', {data: data})
+		    	 self.socket.socket.disconnect();		
+			 }	
 		},
 		 ":room_id route": function(data, room) {
 		    var self = this; // Self points to controller
