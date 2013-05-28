@@ -46,10 +46,12 @@ var RoomModel = require('./models/roommodel');
 
 
 
+/*
 io.configure(function () { 
   io.set("transports", ["xhr-polling"]); 
   io.set("polling duration", 10); 
 });
+*/
 
 
 
@@ -75,7 +77,7 @@ var MobilePlayer;
 var roomID;
 io.sockets.on('connection', function(socket,data){
 	socket.emit('connected', {message: 'Connected to NodePong!', from: "System"});
-	
+
 	
 	socket.on('player1', function(){
 		clients.player1.position = 'closed';
@@ -90,7 +92,8 @@ io.sockets.on('connection', function(socket,data){
 		countPlayers();
 	})
 
-	countPlayers = function(){	
+	countPlayers = function(){
+		console.log('countPlayer', clients);
 		socket.broadcast.to(roomID).emit('clients', {clients: clients});	
 	}	
 	if(roomID){		
@@ -147,7 +150,6 @@ io.sockets.on('connection', function(socket,data){
 			clients.player2.playerID = 0;
 		}
 		countPlayers();
-		
 	});
 	
 }); // End Connection
