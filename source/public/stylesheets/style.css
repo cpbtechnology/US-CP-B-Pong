@@ -510,8 +510,8 @@ button#player2 {
   width: 700px;
   text-align: center;
   color: #fff;
+  font-size: 140px;
   display: none;
-  opacity: 0;
 }
 #congrats {
   text-height: 120px;

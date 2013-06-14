@@ -8,7 +8,7 @@
 		'speed': 2, //controls the speed of the ball
 		'paddle_inc': 3, //how many pixels paddle can move in either direction
 		'pause': false,
-		'gameOver': 5,
+		'gameOver': 2,
 		'playersReady': false,
 		'paddleHeight': 20,
 		'ballInPlay': false
@@ -77,7 +77,8 @@
 	ball = new Array();
 	paddle_1['height'] = 120;
 	paddle_2['height'] = 120;
-
+	ball_direction = 0;
+	
 	function sleep(numberMillis) {
 		var now = new Date();
 		var exitTime = now.getTime() + numberMillis;
@@ -168,8 +169,6 @@
 			playarea.rect(ball['x'], ball['y'], ball['width'], ball['height']);
 			ball['x'] = ball['x'] + Math.cos((ball_direction) * Math.PI / 180) * speed;
 			ball['y'] = ball['y'] + Math.sin((ball_direction) * Math.PI / 180) * speed;
-		
-			playarea.fill();
 		}
 
 		//app.config.ballInPlay 
@@ -191,16 +190,17 @@
 			if(ball['x'] <= 0) {
 				if (app.config.playersReady == true){
 					setScore(player_2);
+					
+					renderBall();
 				}
-				renderBall();
-				sleep(1000);
+				sleep(500);
 			}
 			if(ball['x'] >= (pa['width'] - ball['width'])) {
 				if (app.config.playersReady == true){
 					setScore(player_1);
+					renderBall();
 				}
-				renderBall();
-				sleep(1000);
+				sleep(500);
 			}
 
 			//check to see if ball hit top or bottom wall. if so, change direction
@@ -222,52 +222,67 @@
 	
 	
 	var setScore = function(p) {
-			
+			app.config.ballInPlay = false;
 			if(p == player_1) {
 				player_1_scr++;
-				//paddle_2['height'] =  paddle_2['height'] - ((player_1_scr/app.config.gameOver)/3 * paddle_2['height'])
-				$('#p1_scr').fadeOut('slow', function(){
-					$('#p1_scr').html(player_1_scr);
-					$('#p1_scr').fadeIn()
-				});
 			}
 			if(p == player_2) {
 				player_2_scr++;
-				//paddle_1['height'] = paddle_1['height'] - ((player_2_scr/app.config.gameOver)/3 * paddle_1['height'])
-				$('#p2_scr').fadeOut('slow', function(){
-					$('#p2_scr').html(player_2_scr);
-					$('#p2_scr').fadeIn()
-				});
 			}
-			if(player_2_scr === app.config.gameOver || player_1_scr == app.config.gameOver){
+			if(player_2_scr >= app.config.gameOver || player_1_scr >= app.config.gameOver){
+				console.log('player wins');
 				playerWins();
 			}
-	}
+			else{
+				updateScore(p);
+				
+			}
+			
+			
+	};
+	var updateScore = function(p){
+			console.log(p);
+			if(p == 0) {
+				$('#p1_scr').fadeOut('slow', function(){
+					$('#p1_scr').html(player_1_scr);
+					$('#p1_scr').fadeIn();	
+				});
+			}
+			if(p == 1) {
+				$('#p2_scr').fadeOut('slow', function(){
+					$('#p2_scr').html(player_2_scr);
+					$('#p2_scr').fadeIn();
+				});
+			}	
+	};
 	var playerWins = function(){
-	
+		console.log('player win function');
+		$('#winner').html('Player1 Wins!');
 		if (player_1_scr == app.config.gameOver){
-			$('#congrats').html('Player1 Wins!');
+			$('#winner').html('Player1 Wins!');
 		}
 		if (player_2_scr == app.config.gameOver){
-			$('#congrats').html('Player2 Wins!');
+			$('#winner').html('Player2 Wins!');
 		}
-		
-		$('#winner').animate({
-		    opacity: 1,
-		    height: 'toggle',
-		    opacity: 1,
-		  }, 5000, function() {
-		     $('#winner').hide();	     
-		     	
-		     	player_1_scr = 0
-				$('#p1_scr').html(player_1_scr);
-				player_2_scr = 0
-				$('#p2_scr').html(player_2_scr);	     
-				
-				socket.emit('newGame');
-		  });
-		
+		$('#winner').fadeIn('slow', function(){
+			console.log('finishgame');
+			finishGame = setInterval(endGame, 5000)
+			//clearInterval(finishGame)
+			console.log('finish finish');
+		})
 	}
+	var endGame = function(){
+		console.log('game end');
+		socket.emit('newGame');
+		
+		//$('#winner').fadeOut()
+		player_1_scr = 0
+		$('#p1_scr').html(player_1_scr);
+		player_2_scr = 0
+		$('#p2_scr').html(player_2_scr);
+		
+		$('#instructions').fadeIn()
+	};
 	var newGame = function(){
 		var timer;
 		$('#instructions').fadeOut( function(){
@@ -289,9 +304,9 @@
 		  }
 		}
 		function endCountdown() {
-		  $('#countdown').fadeOut(function(){
+		  app.config.ballInPlay = true;
+		  $('#countdown').fadeOut('slow',function(){
 			  renderBall();
-			 console.log('end'); 
 		  });
 		  
 		}
@@ -312,8 +327,8 @@
 	var self = this;
 	var isMoving1 = false;
 	var isMoving2 = false;
-	var paddle1Direction;
-	var paddle2Direction;
+	var paddle1Direction = 0;
+	var paddle2Direction = 0;
 
 	// Player1 moving function
 	startPaddle1 = function(){
@@ -323,6 +338,7 @@
 	}
 	 movePaddle1 = function() {
 		isMoving1 = true;
+		console.log('player1 moving' + paddle1Pos);
 		paddle1Pos =  paddle1Pos + paddle1Direction
 	}
 	stopPaddle1 = function(){
@@ -339,6 +355,7 @@
 	}
 	movePaddle2 = function() {
 		isMoving2 = true;
+		console.log('player2 moving'+ paddle2Pos);
 		paddle2Pos =  paddle2Pos + paddle2Direction
 	}
 	stopPaddle2 = function(){
@@ -352,10 +369,10 @@
 		if (currentPlayer == 1){
 			
 			if(data.data.paddlePos == 'up'){
-				paddle1Direction= + 3;
+				paddle1Direction= + 4;
 			}
 			if(data.data.paddlePos == 'down'){
-				paddle1Direction = -3
+				paddle1Direction = -4;
 			}	
 			if(data.data.paddlePos == 'stop'){
 				stopPaddle1()
@@ -398,8 +415,7 @@
 		}
 		if(data.clients.player1.position  == 'open'){
 			$('#player1').removeClass('connected');
-			//paddle1Pos = (pa['height'] / 2) - (paddle_1['height'] / 2);
-			
+			//paddle1Pos = (pa['height'] / 2) - (paddle_1['height'] / 2);	
 		}
 		if(data.clients.player2.position  == 'open'){
 			$('#player2').removeClass('connected');
@@ -409,6 +425,7 @@
 			$('#instructions').show();
 		}
 		if(data.clients.player1.position  == 'closed' && data.clients.player2.position  == 'closed' ){
+
 			newGame();
 			app.config.playersReady = true;
 			
