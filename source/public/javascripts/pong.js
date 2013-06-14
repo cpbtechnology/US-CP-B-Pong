@@ -116,6 +116,7 @@
 	}
 	
 	var renderBall = function(){
+		console.log('render ball');
 		app.config.ballInPlay = true;
 		ball['width'] = 20;
 		ball['height'] = 20;
@@ -267,24 +268,34 @@
 		$('#winner').fadeIn('slow', function(){
 			console.log('finishgame');
 			finishGame = setInterval(endGame, 5000)
-			//clearInterval(finishGame)
 			console.log('finish finish');
+			
+				player_1_scr = 0
+				$('#p1_scr').html(player_1_scr);
+				player_2_scr = 0
+				$('#p2_scr').html(player_2_scr);
+			function endGame(){
+				$('#winner').fadeOut();
+				console.log('game end');
+				app.config.ballInPlay = false;
+				socket.emit('newGame');
+				
+				
+				
+				$('#instructions').fadeIn()
+				clearInterval(finishGame)
+				
+			}
 		})
 	}
-	var endGame = function(){
-		console.log('game end');
-		socket.emit('newGame');
-		
-		//$('#winner').fadeOut()
+
+	var newGame = function(){
+		var timer;
 		player_1_scr = 0
 		$('#p1_scr').html(player_1_scr);
 		player_2_scr = 0
 		$('#p2_scr').html(player_2_scr);
 		
-		$('#instructions').fadeIn()
-	};
-	var newGame = function(){
-		var timer;
 		$('#instructions').fadeOut( function(){
 			$('#instructions').hide();
 			timer = setInterval(function() { handleTimer(count); }, 1000);
@@ -304,17 +315,22 @@
 		  }
 		}
 		function endCountdown() {
-		  app.config.ballInPlay = true;
+		 
 		  $('#countdown').fadeOut('slow',function(){
-			  renderBall();
+			  
+			  console.log(app.config.ballInPlay);
+			  if( app.config.ballInPlay == false){
+			  	renderBall();
+			  }
+			  else {
+				  // do nothing
+			  }
+			  
+			   app.config.ballInPlay = true;
+			  $('#countdown').html(3)
 		  });
 		  
 		}
-	
-		player_1_scr = 0
-		$('#p1_scr').html(player_1_scr);
-		player_2_scr = 0
-		$('#p2_scr').html(player_2_scr);
 		
 		paddle_2['height'] =  120;
 		paddle_1['height'] =  120;
@@ -338,7 +354,6 @@
 	}
 	 movePaddle1 = function() {
 		isMoving1 = true;
-		console.log('player1 moving' + paddle1Pos);
 		paddle1Pos =  paddle1Pos + paddle1Direction
 	}
 	stopPaddle1 = function(){
@@ -355,7 +370,6 @@
 	}
 	movePaddle2 = function() {
 		isMoving2 = true;
-		console.log('player2 moving'+ paddle2Pos);
 		paddle2Pos =  paddle2Pos + paddle2Direction
 	}
 	stopPaddle2 = function(){
@@ -407,11 +421,11 @@
 	socket.on('clients', function(data){ // Logic to say which players are connected on game
 		if(data.clients.player1.position == 'closed'){ 
 			$('#player1').addClass('connected');
-			init();
+			//init();
 		}
 		if(data.clients.player2.position  == 'closed'){
 			$('#player2').addClass('connected');
-			init();
+			//init();
 		}
 		if(data.clients.player1.position  == 'open'){
 			$('#player1').removeClass('connected');

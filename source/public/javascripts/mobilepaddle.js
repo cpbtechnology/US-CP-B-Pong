@@ -80,7 +80,8 @@
 			paddlePos = touchLocation * 540; // multipled times board size
 
 			displayPos = Math.round(Math.round(touchLocation*100));
-    		$('#paddlePosition').html(displayPos+"%");
+    			//$('#paddlePosition').html(displayPos+"%");
+
     		if(oldTouch < touchLocation ){
 	    			socket.emit('paddleLocation', {paddlePos: 'up', MobilePlayer:MobilePlayer});
 	    		
