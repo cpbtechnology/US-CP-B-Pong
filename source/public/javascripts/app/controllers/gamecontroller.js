@@ -24,7 +24,7 @@
 		      RoomModel.findAll({}, function(rooms){ //.findAll is an ajax call to the back end
 		        self.element.html(Templates["pages/partial.rooms.jade"]({rooms:rooms})); //renders html partial.rooms.jade
 		      });
-		     if( /Android|webOS|iPhone|iPad|iPod|iemobile|BlackBerry/i.test(navigator.userAgent) || aryQueryString.mobile == "true") {
+		     if( /Android|webOS|iPhone|iPad|iPod|iemobile|BlackBerry/i.test(navigator.userAgent)) {
 		    	 socket.emit('playerbacks', {data: data})
 		    	 self.socket.socket.disconnect();		
 			 }	
@@ -33,10 +33,9 @@
 		    var self = this; // Self points to controller
 		    
 		    RoomModel.findOne({id: data.room_id}, function(room){
-				var aryQueryString = self.getQueryString();
 								
 				self.room = room;	
-				if( /Android|webOS|iPhone|iPad|iPod|iemobile|BlackBerry/i.test(navigator.userAgent) || aryQueryString.mobile == "true") {
+				if( /Android|webOS|iPhone|iPad|iPod|iemobile|BlackBerry/i.test(navigator.userAgent)) {
 					self.element.html(Templates["pages/partial.mobileroom.jade"]);
 				}	
 				else {		
@@ -55,28 +54,6 @@
 					 
 				
 			});
-	    },
-	    getQueryString: function(){
-	    	// This function is anonymous, is executed immediately and 
-			// the return value is assigned to QueryString!
-			var query_string = {};
-			var query = window.location.search.substring(1);
-			var vars = query.split("&");
-			for (var i=0;i<vars.length;i++) {
-				var pair = vars[i].split("=");
-				// If first entry with this name
-				if (typeof query_string[pair[0]] === "undefined") {
-				  query_string[pair[0]] = pair[1];
-					// If second entry with this name
-				} else if (typeof query_string[pair[0]] === "string") {
-				  var arr = [ query_string[pair[0]], pair[1] ];
-				  query_string[pair[0]] = arr;
-					// If third or later entry with this name
-				} else {
-				  query_string[pair[0]].push(pair[1]);
-				}
-			} 
-			return query_string;
 	    }
 	
 	});

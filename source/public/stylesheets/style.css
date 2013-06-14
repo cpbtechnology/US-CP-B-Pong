@@ -415,12 +415,23 @@ h3 {
 #instructions {
   position: absolute;
   top: 0;
-  padding: 20px;
-  margin: 50px 80px;
+  padding: 20px 20px 100px 20px;
+  margin: 25px 80px;
   width: 700px;
   text-align: center;
   background-color: #222;
   color: #fff;
+}
+#countdown {
+  position: absolute;
+  top: 0;
+  font-size: 300px;
+  visibility: none;
+  color: #fff;
+  margin: 0 auto;
+  text-align: center;
+  left: 41%;
+  width: 167px;
 }
 #geturl {
   overflow: hidden;
@@ -430,14 +441,14 @@ h3 {
   float: left;
   text-align: center;
   width: 10%;
-  height: 230px;
+  height: 285px;
   line-height: 100px;
 }
 #geturl #qr {
   background: url("../images/qr.svg") no-repeat;
   display: block;
   background-size: 70%;
-  background-position: 40px 0;
+  background-position: 40px 30px;
   width: 45%;
 }
 #geturl li#link {
@@ -465,6 +476,12 @@ h3 {
 #p2_scr {
   text-align: left;
 }
+button#player1 {
+  display: none;
+}
+button#player2 {
+  display: none;
+}
 .currentPlayers {
   display: block;
   width: 50%;
@@ -482,7 +499,8 @@ h3 {
   width: 100px;
   height: 100px;
   position: absolute;
-  top: -50px;
+  top: 16px;
+  left: 17%;
 }
 #winner {
   position: absolute;
@@ -597,10 +615,7 @@ footer a i b {
     outline-style: none;
     outline-width: 0px;
     width: 100%;
-    padding-bottom: 9px;
-    padding-left: 14px;
-    padding-right: 14px;
-    padding-top: 8px;
+    padding: 10% 5%;
     position: relative;
     text-align: center;
     text-decoration: none;
@@ -647,5 +662,8 @@ footer a i b {
     bottom: 0;
     left: 0;
     right: 0;
+  }
+  #roomsClosed {
+    display: none;
   }
 }

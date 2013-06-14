@@ -44,23 +44,12 @@ var io = require('socket.io').listen(server);
 var RoomModel = require('./models/roommodel');
 
 
-
-
-/*
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
-});
-*/
-
-
-
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
 	
-var clients = {
+var clients = { // Object to store player data
 	'player1': {
 		'position': 'open',	
 		'playerID': 0	
@@ -72,12 +61,11 @@ var clients = {
 	}
 
 
-
 var MobilePlayer;
 var roomID;
 io.sockets.on('connection', function(socket,data){
 	socket.emit('connected', {message: 'Connected to NodePong!', from: "System"});
-
+	
 	
 	socket.on('player1', function(){
 		clients.player1.position = 'closed';
@@ -88,7 +76,6 @@ io.sockets.on('connection', function(socket,data){
 	socket.on('player2', function(){
 		clients.player2.position = 'closed';
 		clients.player2.playerID = socket.id;
-		
 		countPlayers();
 	})
 
@@ -96,6 +83,7 @@ io.sockets.on('connection', function(socket,data){
 		console.log('countPlayer', clients);
 		socket.broadcast.to(roomID).emit('clients', {clients: clients});	
 	}	
+	countPlayers();
 	if(roomID){		
 		socket.on('paddleLocation', function(data, MobilePlayer){
 			socket.broadcast.to(roomID).emit('sendPaddledata', {data:data});

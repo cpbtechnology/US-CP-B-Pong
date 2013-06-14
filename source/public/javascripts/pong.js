@@ -10,8 +10,10 @@
 		'pause': false,
 		'gameOver': 5,
 		'playersReady': false,
-		'paddleHeight': 20
+		'paddleHeight': 20,
+		'ballInPlay': false
 	};
+	
 	var socket = io.connect(app.config.server.url);
 	//setup dat-gui for visually modifying app settings
 	app.gui = new dat.GUI();
@@ -22,6 +24,7 @@
 		'Normal': 4,
 		'Fast': 16
 	});
+	
 	app.gui.vars.speed.onChange(function(value) {
 		//do something when dat-gui updates the app setting value
 		init();
@@ -48,8 +51,6 @@
 
 	var clients = {};
 	var cursors = {};
-
-	//var socket = io.connect(app.config.server.url);
 
 	playarea_canvas = $('#paper');
 	playarea = playarea_canvas[0].getContext('2d');
@@ -110,7 +111,11 @@
 		
 		paddle_2['x'] = (pa['width'] - pa['player_margin'] - paddle_2['width']);
 		paddle2Pos = (pa['height'] / 2) - (paddle_2['height'] / 2);
-
+		
+	}
+	
+	var renderBall = function(){
+		app.config.ballInPlay = true;
 		ball['width'] = 20;
 		ball['height'] = 20;
 		ball['x'] = (pa['width'] / 2) - (ball['width'] / 2);
@@ -127,8 +132,11 @@
 		speed = app.config.speed;
 		
 	}
-var paddle2Pos, paddle1Pos;
-		var renderPlayarea = function () {	
+	
+	
+	var paddle2Pos, paddle1Pos;
+	
+	var renderPlayarea = function () {	
 		
 		playarea.beginPath();
 		playarea.clearRect(0, 0, pa.width, pa.height);
@@ -136,19 +144,35 @@ var paddle2Pos, paddle1Pos;
 		playarea.strokeStyle = pa['foreground'];
 		playarea.fillRect(0, 0, pa['width'], pa['height']);
 		playarea.drawImage(img,0, 0);
-
-
+		
+		if(paddle1Pos <= 10){		//make sure paddles don't go beyond play area
+			paddle1Pos = 10
+		} 
+		if(paddle1Pos >= (pa['height'] - paddle_1['height'])){
+			paddle1Pos = (pa['height'] - paddle_1['height']);
+		} 
+		
+		if(paddle2Pos <= 10){		//make sure paddles don't go beyond play area
+			paddle2Pos = 10
+		} 
+		if(paddle2Pos >= (pa['height'] - paddle_2['height'])){
+			paddle2Pos = (pa['height'] - paddle_2['height']);
+		} 
 		playarea.rect(paddle_1.x, paddle1Pos, paddle_1.width, paddle_1.height);	
 		playarea.rect(paddle_2.x, paddle2Pos, paddle_2.width, paddle_2.height);
 		playarea.fillStyle = pa['foreground'];
 		playarea.fill();
 		
 		//move ball
-		playarea.rect(ball['x'], ball['y'], ball['width'], ball['height']);
-		ball['x'] = ball['x'] + Math.cos((ball_direction) * Math.PI / 180) * speed;
-		ball['y'] = ball['y'] + Math.sin((ball_direction) * Math.PI / 180) * speed;
+		if(app.config.ballInPlay){	
+			playarea.rect(ball['x'], ball['y'], ball['width'], ball['height']);
+			ball['x'] = ball['x'] + Math.cos((ball_direction) * Math.PI / 180) * speed;
+			ball['y'] = ball['y'] + Math.sin((ball_direction) * Math.PI / 180) * speed;
+		
+			playarea.fill();
+		}
 
-
+		//app.config.ballInPlay 
 		playarea.fillStyle = pa['ball'];
 		playarea.fill();
 		//redraw divider
@@ -156,31 +180,32 @@ var paddle2Pos, paddle1Pos;
 		playarea.lineTo(divider['pos'], 0);
 		playarea.lineTo(divider['pos'], pa['height'] = 467);
 		playarea.lineWidth = 1;
+		
+
 		playarea.closePath();
 		
 	};
 	
 	var testCollisions = function() {
-
 			//check to see if ball went beyond paddles, and if so, score accordingly and reset playarea
 			if(ball['x'] <= 0) {
 				if (app.config.playersReady == true){
 					setScore(player_2);
 				}
-				init()
+				renderBall();
 				sleep(1000);
 			}
 			if(ball['x'] >= (pa['width'] - ball['width'])) {
 				if (app.config.playersReady == true){
 					setScore(player_1);
 				}
-				init();
+				renderBall();
 				sleep(1000);
 			}
 
 			//check to see if ball hit top or bottom wall. if so, change direction
 			if((ball['y'] >= (pa['height'] - ball['height'])) || ball['y'] <= 8) {
-					ball_direction = -ball_direction;
+				ball_direction = -ball_direction;
 			}
 
 			//check to see if the ball hit a paddle, and if so, change ball angle dependant on where it hit the paddle
@@ -196,22 +221,28 @@ var paddle2Pos, paddle1Pos;
 	}
 	
 	
-	
 	var setScore = function(p) {
+			
 			if(p == player_1) {
 				player_1_scr++;
-				paddle_2['height'] =  paddle_2['height'] - ((player_1_scr/app.config.gameOver)/3 * paddle_2['height'])
-				$('#p1_scr').html(player_1_scr);
+				//paddle_2['height'] =  paddle_2['height'] - ((player_1_scr/app.config.gameOver)/3 * paddle_2['height'])
+				$('#p1_scr').fadeOut('slow', function(){
+					$('#p1_scr').html(player_1_scr);
+					$('#p1_scr').fadeIn()
+				});
 			}
 			if(p == player_2) {
 				player_2_scr++;
-				paddle_1['height'] = paddle_1['height'] - ((player_2_scr/app.config.gameOver)/3 * paddle_1['height'])
-				$('#p2_scr').html(player_2_scr);
+				//paddle_1['height'] = paddle_1['height'] - ((player_2_scr/app.config.gameOver)/3 * paddle_1['height'])
+				$('#p2_scr').fadeOut('slow', function(){
+					$('#p2_scr').html(player_2_scr);
+					$('#p2_scr').fadeIn()
+				});
 			}
 			if(player_2_scr === app.config.gameOver || player_1_scr == app.config.gameOver){
 				playerWins();
 			}
-		}
+	}
 	var playerWins = function(){
 	
 		if (player_1_scr == app.config.gameOver){
@@ -238,6 +269,33 @@ var paddle2Pos, paddle1Pos;
 		
 	}
 	var newGame = function(){
+		var timer;
+		$('#instructions').fadeOut( function(){
+			$('#instructions').hide();
+			timer = setInterval(function() { handleTimer(count); }, 1000);
+		});
+		
+	
+		console.log('new game');
+		$('#countdown').show();
+		var count = 3;
+		handleTimer = function() {
+		  if(count === 0) {
+		    clearInterval(timer);
+		    endCountdown();
+		  } else {
+		    $('#countdown').html(count);
+		    count--;
+		  }
+		}
+		function endCountdown() {
+		  $('#countdown').fadeOut(function(){
+			  renderBall();
+			 console.log('end'); 
+		  });
+		  
+		}
+	
 		player_1_scr = 0
 		$('#p1_scr').html(player_1_scr);
 		player_2_scr = 0
@@ -251,27 +309,76 @@ var paddle2Pos, paddle1Pos;
 		self.renderPlayarea();
     }
 
-    var self = this;
+	var self = this;
+	var isMoving1 = false;
+	var isMoving2 = false;
+	var paddle1Direction;
+	var paddle2Direction;
 
+	// Player1 moving function
+	startPaddle1 = function(){
+		if(!isMoving1){
+			paddle1Speed = setInterval(movePaddle1, 10)
+		}
+	}
+	 movePaddle1 = function() {
+		isMoving1 = true;
+		paddle1Pos =  paddle1Pos + paddle1Direction
+	}
+	stopPaddle1 = function(){
+		isMoving1 = false;
+		clearInterval(paddle1Speed);
+	}
+	
+	
+	// Player2 Moving function
+	startPaddle2 = function(){
+		if(!isMoving2){
+			paddle2Speed = setInterval(movePaddle2, 10)
+		}
+	}
+	movePaddle2 = function() {
+		isMoving2 = true;
+		paddle2Pos =  paddle2Pos + paddle2Direction
+	}
+	stopPaddle2 = function(){
+		isMoving2 = false;
+		clearInterval(paddle2Speed); 
+	}
+		
 	socket.on('sendPaddledata', function(data){
 		currentPlayer = data.data.MobilePlayer;
+		
 		if (currentPlayer == 1){
-			paddle1Pos = data.data.paddlePos;
-			if(paddle1Pos <= 0){		//make sure paddles don't go beyond play area
-				paddle1Pos = 0
-			} 
-			if(paddle1Pos >= (pa['height'] - paddle_1['height'])){
-				paddle1Pos = (pa['height'] - paddle_1['height']);
-			} 
+			
+			if(data.data.paddlePos == 'up'){
+				paddle1Direction= + 3;
+			}
+			if(data.data.paddlePos == 'down'){
+				paddle1Direction = -3
+			}	
+			if(data.data.paddlePos == 'stop'){
+				stopPaddle1()
+			}
+			if(data.data.paddlePos == 'start'){
+				startPaddle1()
+			}
+			
 		}
 		if (currentPlayer == 2){		
-			paddle2Pos = data.data.paddlePos;
-			if(paddle2Pos <= 0){		//make sure paddles don't go beyond play area
-				paddle2Pos = 0
-			} 
-			if(paddle2Pos >= (pa['height'] - paddle_2['height'])){
-				paddle2Pos = (pa['height'] - paddle_2['height']);
-			} 			
+			
+			if(data.data.paddlePos == 'up'){
+				paddle2Direction= + 3;
+			}
+			if(data.data.paddlePos == 'down'){
+				paddle2Direction = -3
+			}
+			if(data.data.paddlePos == 'stop'){
+				stopPaddle2()
+			}
+			if(data.data.paddlePos == 'start'){
+				startPaddle2()
+			}		
 		}
 	});
 	setInterval(sendPaddleData, 10);
@@ -283,24 +390,26 @@ var paddle2Pos, paddle1Pos;
 	socket.on('clients', function(data){ // Logic to say which players are connected on game
 		if(data.clients.player1.position == 'closed'){ 
 			$('#player1').addClass('connected');
+			init();
 		}
 		if(data.clients.player2.position  == 'closed'){
 			$('#player2').addClass('connected');
+			init();
 		}
 		if(data.clients.player1.position  == 'open'){
 			$('#player1').removeClass('connected');
-			paddle1Pos = -1000;
+			//paddle1Pos = (pa['height'] / 2) - (paddle_1['height'] / 2);
+			
 		}
 		if(data.clients.player2.position  == 'open'){
 			$('#player2').removeClass('connected');
-			paddle2Pos = -1000;
+			//paddle2Pos = (pa['height'] / 2) - (paddle_2['height'] / 2);
 		}
 		if(data.clients.player1.position  == 'open' || data.clients.player2.position == 'open' ){
 			$('#instructions').show();
-			newGame();
 		}
 		if(data.clients.player1.position  == 'closed' && data.clients.player2.position  == 'closed' ){
-			$('#instructions').hide();
+			newGame();
 			app.config.playersReady = true;
 			
 		}

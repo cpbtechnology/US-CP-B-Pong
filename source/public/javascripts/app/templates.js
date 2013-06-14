@@ -19,7 +19,7 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<script src="/javascripts/pong.js"></script><div id="room"></div><div id="canvas"><canvas id="paper" width="900" height="475" style="margin: 50px auto; display: block;"></canvas><div id="score"><span id="p1_scr">0</span><span id="p2_scr">0</span></div><div id="instructions"><ul id="geturl"><li id="qr"></li><li>OR</li><li id="link">goo.gl/tMeQR </li></ul><div id="player1" class="currentPlayers">Player 1</div><div id="player2" class="currentPlayers">Player 2</div></div><div id="winner"><p id="congrats">Congratulations! </p></div></div><footer><h2>Node Pong</h2></footer>');
+buf.push('<script src="/javascripts/pong.js"></script><div id="room"></div><div id="canvas"><canvas id="paper" width="900" height="475" style="margin: 50px auto; display: block;"></canvas><div id="score"><span id="p1_scr">0</span><span id="p2_scr">0</span></div><span id="countdown"></span><div id="instructions"><ul id="geturl"><li id="qr"></li><li>OR</li><li id="link">goo.gl/tMeQR <div id="player1" class="currentPlayers"></div><div id="player2" class="currentPlayers"></div></li></ul></div><div id="winner"><p id="congrats">Congratulations! </p></div></div><footer><h2>Node Pong</h2></footer>');
 }
 return buf.join("");
 }
