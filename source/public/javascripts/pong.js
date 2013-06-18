@@ -11,7 +11,8 @@
 		'gameOver': 2,
 		'playersReady': false,
 		'paddleHeight': 20,
-		'ballInPlay': false
+		'ballInPlay': false,
+		'gameOn': false
 	};
 	
 	var socket = io.connect(app.config.server.url);
@@ -275,6 +276,7 @@
 				player_2_scr = 0
 				$('#p2_scr').html(player_2_scr);
 			function endGame(){
+				app.config.gameOn = false;
 				$('#winner').fadeOut();
 				console.log('game end');
 				app.config.ballInPlay = false;
@@ -291,6 +293,7 @@
 
 	var newGame = function(){
 		var timer;
+		app.config.gameOn = true;
 		player_1_scr = 0
 		$('#p1_scr').html(player_1_scr);
 		player_2_scr = 0
@@ -439,8 +442,11 @@
 			$('#instructions').show();
 		}
 		if(data.clients.player1.position  == 'closed' && data.clients.player2.position  == 'closed' ){
-
-			newGame();
+			
+			if(app.config.gameOn == false){
+				newGame();
+			}
+			
 			app.config.playersReady = true;
 			
 		}

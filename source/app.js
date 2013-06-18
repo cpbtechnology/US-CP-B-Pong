@@ -58,7 +58,7 @@ var clients = { // Object to store player data
 		'position': 'open',	
 		'playerID': 0
 		}
-	}
+	};
 
 
 var MobilePlayer;
